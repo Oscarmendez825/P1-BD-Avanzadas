@@ -1,0 +1,36 @@
+<body>
+  <div class="container">
+    <h2 class="main-heading">Mantenimiento de Investigadores</h2>
+
+    <!-- Botón de alternancia -->
+    <button class="btn hover-green" (click)="toggleSection()">Cambiar Sección</button>
+
+    <!-- Sección para modificar investigadores existentes -->
+    <div *ngIf="section" class="section">
+      <h3>Modificar Investigador</h3>
+      <select [(ngModel)]="investigatorSelected" class="input-field" (change)="selectInvestigator()">
+        <option *ngFor="let investigador of investigadores" [value]="investigador.id">{{ investigador.nombreCompleto }}
+        </option>
+      </select>
+      <div *ngIf="investigatorSelected" class="section">
+        <input type="text" [(ngModel)]="investigador.nombreCompleto" class="input-field" placeholder="Nombre completo">
+        <input type="text" [(ngModel)]="investigador.tituloAcademico" class="input-field" placeholder="Título académico">
+        <input type="text" [(ngModel)]="investigador.institucion" class="input-field" placeholder="Institución">
+        <input type="email" [(ngModel)]="investigador.correoElectronico" class="input-field" placeholder="Correo electrónico">
+      </div>
+      <button class="btn btn-danger" (click)="modifyInvestigator()">Modificar</button>
+
+    </div>
+
+
+    <!-- Sección para crear nuevos investigadores -->
+    <div *ngIf="!section" class="section">
+      <h3>Crear Nuevo Investigador</h3>
+      <input type="text" [(ngModel)]="investigador.nombreCompleto" class="input-field" placeholder="Nombre completo">
+      <input type="text" [(ngModel)]="investigador.tituloAcademico" class="input-field" placeholder="Título académico">
+      <input type="text" [(ngModel)]="investigador.institucion" class="input-field" placeholder="Institución">
+      <input type="email" [(ngModel)]="investigador.correoElectronico" class="input-field" placeholder="Correo electrónico">
+      <button class="btn btn-danger" (click)="createInvestigator()">Crear</button>
+    </div>
+  </div>
+</body>

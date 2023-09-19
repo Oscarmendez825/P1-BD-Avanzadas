@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MantInvestigadoresComponent } from './Pages/mant-investigadores/mant-investigadores.component';
 import { FormsModule } from '@angular/forms';
 import { MantProyectosComponent } from './Pages/mant-proyectos/mant-proyectos.component';
+import { MantPublicacionesComponent } from './Pages/mant-publicaciones/mant-publicaciones.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +20,8 @@ import { MantProyectosComponent } from './Pages/mant-proyectos/mant-proyectos.co
     StartPageComponent,
     LayoutComponent,
     MantInvestigadoresComponent,
-    MantProyectosComponent
+    MantProyectosComponent,
+    MantPublicacionesComponent
   ],
   imports: [
     BrowserModule,

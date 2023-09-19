@@ -4,6 +4,7 @@ import { StartPageComponent } from './Pages/start-page/start-page.component';
 import { LayoutComponent } from './Components/layout/layout.component';
 import { MantInvestigadoresComponent } from './Pages/mant-investigadores/mant-investigadores.component';
 import { MantProyectosComponent } from './Pages/mant-proyectos/mant-proyectos.component';
+import { MantPublicacionesComponent } from './Pages/mant-publicaciones/mant-publicaciones.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: 'home', component: StartPageComponent },
       { path: 'mantInv', component: MantInvestigadoresComponent},
       { path: 'mantProj', component: MantProyectosComponent},
+      { path: 'mantPubs', component: MantPublicacionesComponent},
       {path: "**", redirectTo: "home", pathMatch:"full"}, 
     ],
   }

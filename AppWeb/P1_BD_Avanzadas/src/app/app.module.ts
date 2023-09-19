@@ -6,17 +6,27 @@ import { StartPageComponent } from './Pages/start-page/start-page.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { LayoutComponent } from './Components/layout/layout.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MantInvestigadoresComponent } from './Pages/mant-investigadores/mant-investigadores.component';
+import { FormsModule } from '@angular/forms';
+import { MantProyectosComponent } from './Pages/mant-proyectos/mant-proyectos.component';
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     HeaderComponent,
     StartPageComponent,
-    LayoutComponent
+    LayoutComponent,
+    MantInvestigadoresComponent,
+    MantProyectosComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

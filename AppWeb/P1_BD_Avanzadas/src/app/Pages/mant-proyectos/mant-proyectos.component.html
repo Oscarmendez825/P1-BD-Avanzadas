@@ -1,0 +1,44 @@
+<body>
+    <div class="container">
+        <h2 class="main-heading">Mantenimiento de Proyectos</h2>
+
+        <!-- Botón de alternancia -->
+        <button class="btn hover-green" (click)="toggleSection()">Cambiar Sección</button>
+
+        <!-- Sección para modificar investigadores existentes -->
+        <div *ngIf="section" class="section">
+            <h3>Modificar Proyecto</h3>
+            <select [(ngModel)]="projectSelected" class="input-field" (change)="selectProject()">
+                <option *ngFor="let project of projects" [value]="project.titulo">{{ project.titulo }}
+                </option>
+            </select>
+            <div *ngIf="projectSelected" class="section">
+                <label class="label-text">Título del proyecto de investigación</label>
+                <input type="text" [(ngModel)]="project.titulo" class="input-field" placeholder="Título">
+                <label class="label-text">Año de inicio del proyecto</label>
+                <input type="text" [(ngModel)]="project.anio" class="input-field" placeholder="Año">
+                <label class="label-text">Duración en meses</label>
+                <input type="text" [(ngModel)]="project.duracion" class="input-field" placeholder="Duración">
+                <label class="label-text">Área de conocimiento a la que pertenece</label>
+                <input type="text" [(ngModel)]="project.area" class="input-field" placeholder="Área">
+            </div>
+            <button class="btn btn-danger" (click)="modifyProject()">Modificar</button>
+
+        </div>
+
+
+        <!-- Sección para crear nuevos investigadores -->
+        <div *ngIf="!section" class="section">
+            <h3>Crear Nuevo Proyecto</h3>
+            <label class="label-text">Título del proyecto de investigación</label>
+            <input type="text" [(ngModel)]="project.titulo" class="input-field" placeholder="Título">
+            <label class="label-text">Año de inicio del proyecto</label>
+            <input type="text" [(ngModel)]="project.anio" class="input-field" placeholder="Año">
+            <label class="label-text">Duración en meses</label>
+            <input type="text" [(ngModel)]="project.duracion" class="input-field" placeholder="Duración">
+            <label class="label-text">Área de conocimiento a la que pertenece</label>
+            <input type="text" [(ngModel)]="project.area" class="input-field" placeholder="Área">
+            <button class="btn btn-danger" (click)="createProject()">Crear</button>
+        </div>
+    </div>
+</body>

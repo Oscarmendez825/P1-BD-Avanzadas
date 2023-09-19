@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StartPageComponent } from './Pages/start-page/start-page.component';
 import { LayoutComponent } from './Components/layout/layout.component';
+import { MantInvestigadoresComponent } from './Pages/mant-investigadores/mant-investigadores.component';
+import { MantProyectosComponent } from './Pages/mant-proyectos/mant-proyectos.component';
 
 
 const routes: Routes = [
@@ -10,6 +12,8 @@ const routes: Routes = [
     component: LayoutComponent, // Estructura de página principal con header y footer
     children: [
       { path: 'home', component: StartPageComponent },
+      { path: 'mantInv', component: MantInvestigadoresComponent},
+      { path: 'mantProj', component: MantProyectosComponent},
       {path: "**", redirectTo: "home", pathMatch:"full"}, 
     ],
   }

@@ -27,3 +27,9 @@ CREATE (:Publicacion {
   anno_publicacion: toInteger(row.anno_publicacion),
   nombre_revista: row.nombre_revista
 });
+
+//Cargar investigadores asociados a proyectos
+LOAD CSV WITH HEADERS FROM 'file:///InvestigadoresProy.csv' AS row
+MATCH (investigador:Investigador {id: toInteger(row.idInv)})
+MATCH (proyecto:Proyecto {idPry: toInteger(row.idProy)})
+CREATE (investigador)-[:TRABAJA_EN]->(proyecto);

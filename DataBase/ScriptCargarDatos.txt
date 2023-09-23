@@ -1,0 +1,29 @@
+//Carga de tablas
+//Cargar investigadores
+LOAD CSV WITH HEADERS FROM 'file:///investigadores.csv' AS row
+CREATE (:Investigador {
+  id: toInteger(row.id),
+  nombre_completo: row.nombre_completo,
+  titulo_academico: row.titulo_academico,
+  institucion: row.institucion,
+  email: row.email
+});
+
+//Cargar Proyectos
+LOAD CSV WITH HEADERS FROM 'file:///proyectos.csv' AS row
+CREATE (:Proyecto {
+  idPry: toInteger(row.idPry),
+  titulo_proyecto: row.titulo_proyecto,
+  anno_inicio: toInteger(row.anno_inicio),
+  duracion_meses: toInteger(row.duracion_meses),
+  area_conocimiento: row.area_conocimiento
+});
+
+//Cargar publicaciones
+LOAD CSV WITH HEADERS FROM 'file:///publicaciones.csv' AS row
+CREATE (:Publicacion {
+  idPub: toInteger(row.idPub),
+  titulo_publicacion: row.titulo_publicacion,
+  anno_publicacion: toInteger(row.anno_publicacion),
+  nombre_revista: row.nombre_revista
+});

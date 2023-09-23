@@ -33,3 +33,9 @@ LOAD CSV WITH HEADERS FROM 'file:///InvestigadoresProy.csv' AS row
 MATCH (investigador:Investigador {id: toInteger(row.idInv)})
 MATCH (proyecto:Proyecto {idPry: toInteger(row.idProy)})
 CREATE (investigador)-[:TRABAJA_EN]->(proyecto);
+
+//Cargar publicaciones asociadas a proyectos
+LOAD CSV WITH HEADERS FROM 'file:///PublicacionesProy.csv' AS row
+MATCH (proyecto:Proyecto {idPry: toInteger(row.idProyecto)})
+MATCH (publicacion:Publicacion {idPub: toInteger(row.idArt)})
+CREATE (proyecto)-[:PUBLICADO_EN]->(publicacion);

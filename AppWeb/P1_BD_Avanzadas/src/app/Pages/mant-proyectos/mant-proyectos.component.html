@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <body>
     <div class="container">
         <h2 class="main-heading">Mantenimiento de Proyectos</h2>
@@ -9,8 +12,7 @@
         <div *ngIf="section" class="section">
             <h3>Modificar Proyecto</h3>
             <select [(ngModel)]="projectSelected" class="input-field" (change)="selectProject()">
-                <option *ngFor="let project of projects" [value]="project.titulo">{{ project.titulo }}
-                </option>
+                <option *ngFor="let project of projects" [value]="project.titulo">{{ project.titulo }}</option>
             </select>
             <div *ngIf="projectSelected" class="section">
                 <label class="label-text">Título del proyecto de investigación</label>
@@ -23,9 +25,7 @@
                 <input type="text" [(ngModel)]="project.area" class="input-field" placeholder="Área">
             </div>
             <button class="btn btn-danger" (click)="modifyProject()">Modificar</button>
-
         </div>
-
 
         <!-- Sección para crear nuevos investigadores -->
         <div *ngIf="!section" class="section">
@@ -42,3 +42,4 @@
         </div>
     </div>
 </body>
+</html>

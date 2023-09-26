@@ -85,6 +85,19 @@ RETURN p.titulo_proyecto;
 MATCH (p:Proyecto)
 RETURN p.area_conocimiento;
 
+//Busqueda de investigador por nombre que devuelve toda su info y los proyectos donde participa
+MATCH (i:Investigador {nombre_completo: 'Nombre Investigador'})-[:TRABAJA_EN]->(p:Proyecto)
+WITH i, COLLECT({idProy: p.idPry, tituloProyecto: p.titulo_proyecto, annoInicio: p.anno_inicio, duracionMeses: p.duracion_meses, areaConocimiento: p.area_conocimiento}) AS proyectos
+RETURN i.id AS idInvestigador, i.titulo_academico AS tituloAcademico, i.institucion AS institucion, i.email AS correo, proyectos;
+
+//Busqueda de proyectos a partir de su nombre, devuelve info del proyecto, de los investigadores y de las publicaciones asociadas
+MATCH (p:Proyecto {titulo_proyecto: 'Titulo Proyecto'})
+RETURN [{idProy: p.idPry, annoInicio: p.anno_inicio , duracionMeses: p.duracion_meses, areaConocimiento: p.area_conocimiento}] AS proyecto,
+       [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombreCompleto: i.nombre_completo,tituloAcademico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
+       [(pb:Publicacion)<-[:PUBLICADO_EN]-(p) | {tituloPublicacion: pb.titulo_publicacion, annoPublicacion: pb.anno_publicacion, nombreRevista: pb.nombre_revista}] AS publicaciones;
+
+
+
 //*****Asociar*****
 //Asociar investigador a proyecto por ID
 MATCH (i:Investigador), (p:Proyecto)
@@ -129,4 +142,6 @@ WITH i, i.institucion AS institucion, COUNT(p) AS cantidadProyectos
 RETURN i.nombre_completo AS nombreCompleto, institucion, cantidadProyectos
 ORDER BY cantidadProyectos DESC
 LIMIT 5;
+
+
 

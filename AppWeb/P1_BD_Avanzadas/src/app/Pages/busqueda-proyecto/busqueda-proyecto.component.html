@@ -1,1 +1,65 @@
-<p>busqueda-proyecto works!</p>
+<div class="background">
+    <!-- investigador.component.html -->
+    <div class="investigador-container">
+        <h2 class="investigador-title">Búsqueda de Proyecto</h2>
+        <form>
+            <label for="investigadorSelect" class="investigador-label">Selecciona un proyecto:</label>
+            <select id="investigadorSelect" (change)="seleccionarProyecto($event)" class="investigador-select">
+                <option value="" disabled selected>Elige un proyecto</option>
+                <option *ngFor="let proyecto of proyectos" [ngValue]="proyecto">{{
+                    proyecto.titulo }}</option>
+            </select>
+        </form>
+
+        <h3 class="investigador-subtitle">Datos básicos del proyecto</h3>
+        <table *ngIf="proyectoSeleccionado" class="investigador-table">
+            <tr>
+                <th>Título</th>
+                <td>{{ proyectoSeleccionado.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Año</th>
+                <td>{{ proyectoSeleccionado.anio }}</td>
+            </tr>
+            <tr>
+                <th>Área</th>
+                <td>{{ proyectoSeleccionado.area }}</td>
+            </tr>
+            <tr>
+                <th>Duración</th>
+                <td>{{ proyectoSeleccionado.duracion }}</td>
+            </tr>
+        </table>
+
+        <h3 class="investigador-subtitle">Investigadores que participan</h3>
+        <table *ngIf="investigadoresProyecto.length > 0" class="investigador-table">
+            <tr>
+                <th>Nombre</th>
+                <th>Título Académico</th>
+                <th>Institución</th>
+                <th>Correo Electronico</th>
+            </tr>
+            <tr *ngFor="let investigador of investigadoresProyecto">
+                <td>{{ investigador.nombreCompleto }}</td>
+                <td>{{ investigador.tituloAcademico }}</td>
+                <td>{{ investigador.institucion }}</td>
+                <td>{{ investigador.correoElectronico }}</td>
+            </tr>
+        </table>
+
+        <h3 class="investigador-subtitle">Publicaciones asociadas al proyecto</h3>
+        <table *ngIf="publicacionesProyecto.length > 0" class="investigador-table">
+            <tr>
+                <th>Título</th>
+                <th>Año</th>
+                <th>Revista</th>
+            </tr>
+            <tr *ngFor="let publicacion of publicacionesProyecto">
+                <td>{{ publicacion.titulo }}</td>
+                <td>{{ publicacion.anio }}</td>
+                <td>{{ publicacion.revista }}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>

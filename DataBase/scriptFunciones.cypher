@@ -39,6 +39,7 @@ LOAD CSV WITH HEADERS FROM 'file:///PublicacionesProy.csv' AS row
 MATCH (proyecto:Proyecto {idPry: toInteger(row.idProyecto)})
 MATCH (publicacion:Publicacion {idPub: toInteger(row.idArt)})
 CREATE (proyecto)-[:PUBLICADO_EN]->(publicacion);
+//CREATE (publicacion)-[:REALIZADA_EN]->(proyecto); **************************Correir, esta relacion es la que sirve, la de arriba esta mal***********************
 
 
 //*****Actualizacion de datos*****
@@ -96,6 +97,19 @@ RETURN [{idProy: p.idPry, annoInicio: p.anno_inicio , duracionMeses: p.duracion_
        [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombreCompleto: i.nombre_completo,tituloAcademico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
        [(pb:Publicacion)<-[:PUBLICADO_EN]-(p) | {tituloPublicacion: pb.titulo_publicacion, annoPublicacion: pb.anno_publicacion, nombreRevista: pb.nombre_revista}] AS publicaciones;
 
+//Busqueda de publicaciones a partir de su titulo, devuelve informacion de estas y el nombre de los proyectos asociados
+MATCH (pb:Publicacion {titulo_publicacion: 'Titulo Publicacion'})<-[:PUBLICADO_EN]-(p:Proyecto)
+RETURN pb.idPub AS idPublicacion, pb.anno_publicacion AS annoPublicacion, pb.nombre_revista AS nombreRevista, p.titulo_proyecto AS tituloProyecto;
+
+//Busqueda de area de conocimiento por nombre del area, devuelve el nombre del area de conocimiento, los nombres de los proyectos asociados y de las publicaciones del area
+MATCH (p:Proyecto {area_conocimiento: 'Nombre area conocimiento'})-[:PUBLICADO_EN]->(pb:Publicacion)
+RETURN DISTINCT p.area_conocimiento AS areaConocimiento,
+       COLLECT(DISTINCT p.titulo_proyecto) AS proyectos,
+       COLLECT(DISTINCT pb.titulo_publicacion) AS publicaciones;
+
+//Busqueda de colegas de un investigador a partir de su nombre, devuelve la informacion del investigador y el nombre de los investigadores con los que ha trabajado en otros proyectos.
+MATCH (i:Investigador {nombre_completo: 'Nombre investigador'})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
+RETURN  i.id AS idInvestigador, i.titulo_academico AS tituloAcademico, i.institucion AS institucion, i.email AS correo, COLLECT(DISTINCT i2.nombre_completo) AS nombresColegas;
 
 
 //*****Asociar*****

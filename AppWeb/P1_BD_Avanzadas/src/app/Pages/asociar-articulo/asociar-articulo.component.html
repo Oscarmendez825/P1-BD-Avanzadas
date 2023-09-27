@@ -1,1 +1,19 @@
-<p>asociar-articulo works!</p>
+<div>
+    <h2>Afiliación de Artículo a un Proyecto</h2>
+  
+    <label for="investigadorSelect">Selecciona un artículo:</label>
+    <select id="investigadorSelect" [(ngModel)]="selectedArticulo" (change)="checkFormValidity()">
+      <option *ngFor="let articulo of articulos" [value]="articulo.titulo">{{ articulo.titulo }}</option>
+    </select>
+  
+    <br>
+  
+    <div *ngIf="selectedArticulo">
+      <label for="proyectoSelect">Selecciona un Proyecto:</label>
+      <select id="proyectoSelect" [(ngModel)]="selectedProyecto" (change)="checkFormValidity()">
+        <option *ngFor="let proyecto of proyectos" [value]="proyecto.titulo">{{ proyecto.titulo }}</option>
+      </select>
+    </div>
+    <button (click)="afiliarInvestigador()" [disabled]="isButtonDisabled">Afiliar Investigador</button>
+  </div>
+  

@@ -1,0 +1,48 @@
+/* publicaciones.component.css */
+
+/* Estilos para el select */
+select {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para la tabla */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Estilos para la tabla de detalles */
+  #detalles-table {
+    margin-top: 20px;
+  }
+  
+  /* Estilos para los botones de acción */
+  button {
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

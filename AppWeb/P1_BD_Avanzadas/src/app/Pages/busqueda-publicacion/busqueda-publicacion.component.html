@@ -1,1 +1,31 @@
-<p>busqueda-publicacion works!</p>
+<!-- publicaciones.component.html -->
+
+<div class="container">
+    <h1>Lista de Publicaciones</h1>
+    <select (change)="mostrarDetalles($event)" class="select-publicacion">
+      <option value="">Selecciona una publicación</option>
+      <option *ngFor="let publicacion of publicaciones" [value]="publicacion.titulo">{{ publicacion.titulo }}</option>
+    </select>
+  
+    <table *ngIf="detallesPublicacion" class="tabla-detalles" id="detalles-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Año</th>
+            <th>Revista</th>
+            <th>Proyecto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ detallesPublicacion.titulo }}</td>
+            <td>{{ detallesPublicacion.anio }}</td>
+            <td>{{ detallesPublicacion.revista }}</td>
+            <td>{{ detallesPublicacion.proyecto }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      
+  </div>
+  

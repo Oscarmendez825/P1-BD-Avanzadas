@@ -1,1 +1,15 @@
-<p>top-investigadores works!</p>
+<table class="styled-table">
+    <thead>
+      <tr>
+        <th>Top Investigadores</th>
+        <th>Cantidad de Proyectos de Investigación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let investigador of top">
+        <td>{{ investigador.nombre }}</td>
+        <td>{{ investigador.cantidadProyectos }}</td>
+      </tr>
+    </tbody>
+  </table>
+

@@ -1,1 +1,15 @@
-<p>top-areas works!</p>
+<table class="styled-table">
+    <thead>
+      <tr>
+        <th>Área de Conocimiento</th>
+        <th>Cantidad de Proyectos de Investigación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let area of areas">
+        <td>{{ area.nombre }}</td>
+        <td>{{ area.cantidad }}</td>
+      </tr>
+    </tbody>
+  </table>
+  

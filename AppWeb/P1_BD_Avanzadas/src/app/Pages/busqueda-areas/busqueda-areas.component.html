@@ -1,1 +1,44 @@
-<p>busqueda-areas works!</p>
+<div class="background">
+    <!-- investigador.component.html -->
+    <div class="investigador-container">
+        <h2 class="investigador-title">Búsqueda de Áreas</h2>
+        <form>
+            <label for="investigadorSelect" class="investigador-label">Selecciona un área:</label>
+            <select id="investigadorSelect" (change)="seleccionarArea($event)" class="investigador-select">
+                <option value="" disabled selected>Elige un área</option>
+                <option *ngFor="let area of areas" [ngValue]="area">{{
+                    area.nombre }}</option>
+            </select>
+        </form>
+
+        <h3 class="investigador-subtitle">Datos básicos del investigador</h3>
+        <table *ngIf="areaSeleccionada" class="investigador-table">
+            <tr>
+                <th>Nombre Completo</th>
+                <td>{{ areaSeleccionada.nombre }}</td>
+            </tr>
+        </table>
+
+        <h3 class="investigador-subtitle">Investigaciones en el área seleccionada</h3>
+        <table *ngIf="investigaciones.length > 0" class="investigador-table">
+            <tr>
+                <th>Nombre</th>
+            </tr>
+            <tr *ngFor="let investigacion of investigaciones">
+                <td>{{ investigacion.titulo }}</td>
+            </tr>
+        </table>
+
+        <h3 class="investigador-subtitle">Publicaciones en el área seleccionada</h3>
+        <table *ngIf="publicaciones.length > 0" class="investigador-table">
+            <tr>
+                <th>Título</th>
+            </tr>
+            <tr *ngFor="let publicacion of publicaciones">
+                <td>{{ publicacion.titulo }}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+

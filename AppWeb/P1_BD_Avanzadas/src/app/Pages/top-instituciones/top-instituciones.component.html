@@ -1,1 +1,14 @@
-<p>top-instituciones works!</p>
+<table class="styled-table">
+    <thead>
+      <tr>
+        <th>Top Instituciones</th>
+        <th>Cantidad de Proyectos de Investigación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let institucion of instituciones">
+        <td>{{ institucion.nombre }}</td>
+        <td>{{ institucion.cantidad }}</td>
+      </tr>
+    </tbody>
+  </table>

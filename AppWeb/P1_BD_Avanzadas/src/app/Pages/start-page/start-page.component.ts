@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 // Ejemplo de importación de FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PostService } from 'src/app/Services/post-service';
 
 // Ejemplo de importación de Bootstrap (si es necesario)
 //import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,7 +14,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrls: ['./start-page.component.css']
 })
 export class StartPageComponent {
+
+
   selectedFiles: File[] = [];
+
+  constructor(private postService: PostService) { }
 
   onFileSelected(event: any) {
     const files = event.target.files;
@@ -39,4 +44,13 @@ export class StartPageComponent {
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1);
   }
+
+  subirArchivos(){
+    this.postService.SubirArchivos(this.selectedFiles).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
+  }
+
 }

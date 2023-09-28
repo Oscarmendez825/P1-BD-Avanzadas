@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Publicacion } from 'src/app/Interfaces/Publicacion';
+import { GetService } from 'src/app/Services/get-service';
+import { PostService } from 'src/app/Services/post-service';
+import { PutService } from 'src/app/Services/put-service';
 
 @Component({
   selector: 'app-mant-publicaciones',
@@ -7,49 +10,46 @@ import { Publicacion } from 'src/app/Interfaces/Publicacion';
   styleUrls: ['./mant-publicaciones.component.css']
 })
 export class MantPublicacionesComponent {
-  publications: Publicacion[] = [
-    {
-      "titulo": "Investigación sobre Cambio Climático",
-      "anio": 2022,
-      "revista": "Nature"
-    },
-    {
-      "titulo": "Estudio de Energía Renovable",
-      "anio": 2023,
-      "revista": "Science"
-    },
-    {
-      "titulo": "Desarrollo de Inteligencia Artificial",
-      "anio": 2024,
-      "revista": "Journal of Artificial Intelligence Research"
-    },
-    {
-      "titulo": "Proyecto de Ciencia de Datos",
-      "anio": 2022,
-      "revista": "Data Science Journal"
-    },
-    {
-      "titulo": "Investigación en Medicina Genómica",
-      "anio": 2023,
-      "revista": "Genome Research"
-    }
-  ];
+  publications: Publicacion[] = [];
 
   publication: Publicacion = {
-    titulo: '',
-    anio: 0,
-    revista: ''
+    idPub: 0,
+    titulo_publicacion: '',
+    anno_publicacion: 0,
+    nombre_revista: ''
   };
 
   projectSelected: string = "";
   section: boolean = false;
 
-  modifyPublication() {
+  constructor(private apiService: GetService, private postService: PostService, private putService: PutService) { }
 
+  ngOnInit(): void {
+    this.getPublicaciones();
+  }
+
+  getPublicaciones(){
+    this.apiService.GetPublicaciones().subscribe(
+      (res) => {
+        this.publications = res;
+      }
+    );
+  }
+
+  modifyPublication() {
+    this.putService.ModificarPublicacion(this.publication).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   createPublication() {
-
+    this.postService.crearPublicacion(this.publication).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   toggleSection() {
@@ -59,15 +59,16 @@ export class MantPublicacionesComponent {
       this.section = false;
     }
     this.publication = {
-      titulo: '',
-      anio: 0,
-      revista: ''
+      idPub: 0,
+      titulo_publicacion: '',
+      anno_publicacion: 0,
+      nombre_revista: ''
     };
   }
 
   selectPublication() {
     this.publications.forEach(element => {
-      if (element.titulo === this.projectSelected) {
+      if (element.titulo_publicacion === this.projectSelected) {
         this.publication = element
       }
     });

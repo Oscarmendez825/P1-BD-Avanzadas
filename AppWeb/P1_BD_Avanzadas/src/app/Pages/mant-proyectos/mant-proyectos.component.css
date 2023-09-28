@@ -1,84 +1,74 @@
 /* Estilos generales */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    align-items: center;
-    background-color: #f2f2f2;
-  }
-  
-  /* Estilos para el contenedor principal */
-  .container {
-    min-height: 75vh;
-    display: flex;
-    flex-direction: column; /* Cambiado para apilar elementos verticalmente */
-    justify-content: center;
-    align-items: center;
-    background-color: #f2f2f2;
-    text-align: center;
-    padding: 20px; /* Agregado para dar espacio al contenido */
-  }
-  
-  /* Estilos para el encabezado h1 */
-  .main-heading {
-    font-size: 36px;
-    color: #3498db;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-  }
-  
-  /* Estilos para las secciones */
-  .section {
-    margin: 20px 0;
-    background-color: #fff;
-    border: 1px solid #3498db;
-    padding: 20px;
-    width: 100%; /* Cambiado para ocupar todo el ancho disponible */
-    text-align: center;
-  }
-  
-  /* Estilos para los campos de entrada */
-  .input-field {
-    margin: 8px 0;
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px; /* Reducido el tamaño de fuente para los campos de entrada */
-  }
-  
-  /* Estilos para los botones */
-  .btn {
-    border: 2px solid gray;
-    color: gray;
-    background-color: #fff;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 10px; /* Agregado espacio superior a los botones */
-    cursor: pointer; /* Agregado cursor para indicar que son clicables */
-  }
-  
-  .btn-danger {
-    background-color: #a1e6bb; /* Color rojo */
-    color: #fff; /* Color del texto en blanco */
-  }
-  
-  /* Estilos cuando el mouse está encima del botón */
-  .hover-green:hover {
-    background-color: #a1e6bb; /* Cambiar a un tono más brillante de rojo cuando se coloca el mouse encima */
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f2f2f2;
+}
 
-  .number-input::before {
-    content: "Introduce un número";
-    color: gray;
-  }
-  .number-input {
-    margin: 8px 0;
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px; /* Reducido el tamaño de fuente para los campos de entrada */
-  }
+/* Estilos para el contenedor principal */
+.container {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s; /* Agregada animación de transición */
+}
+
+/* Estilos para el encabezado h1 */
+.main-heading {
+  font-size: 36px;
+  color: #3498db;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+/* Estilos para las secciones */
+.section {
+  margin: 20px 0;
+  background-color: #fff;
+  border: 1px solid #3498db;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s; /* Agregada animación de transición */
+}
+
+/* Estilos para los campos de entrada */
+.input-field {
+  margin: 8px 0;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Estilos para los botones */
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: #fff;
+  padding: 10px 20px; /* Aumentado el espacio alrededor del texto */
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Agregadas animaciones de transición */
+}
+
+.btn-danger {
+  background-color: #a1e6bb;
+  color: #fff;
+}
+
+/* Estilos cuando el mouse está encima del botón */
+.hover-green:hover {
+  background-color: #8be5b4; /* Cambiada la tonalidad al hacer hover */
+  color: #333; /* Cambiado el color del texto al hacer hover */
+}

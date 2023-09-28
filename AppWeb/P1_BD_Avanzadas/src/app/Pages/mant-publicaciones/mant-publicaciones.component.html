@@ -9,16 +9,16 @@
         <div *ngIf="section" class="section">
             <h3>Modificar Publicación</h3>
             <select [(ngModel)]="projectSelected" class="input-field" (change)="selectPublication()">
-                <option *ngFor="let publication of publications" [value]="publication.titulo">{{ publication.titulo }}
+                <option *ngFor="let publication of publications" [value]="publication.titulo_publicacion">{{ publication.titulo_publicacion }}
                 </option>
             </select>
             <div *ngIf="projectSelected" class="section">
                 <label class="label-text">Título del articulo</label>
-                <input type="text" [(ngModel)]="publication.titulo" class="input-field" placeholder="Título">
+                <input type="text" [(ngModel)]="publication.titulo_publicacion" class="input-field" placeholder="Título">
                 <label class="label-text">Año de publicación</label>
-                <input type="text" [(ngModel)]="publication.anio" class="input-field" placeholder="Año">
+                <input type="text" [(ngModel)]="publication.anno_publicacion" class="input-field" placeholder="Año">
                 <label class="label-text">Revista</label>
-                <input type="text" [(ngModel)]="publication.revista" class="input-field" placeholder="Revista">
+                <input type="text" [(ngModel)]="publication.nombre_revista" class="input-field" placeholder="Revista">
             </div>
             <button class="btn btn-danger" (click)="modifyPublication()">Modificar</button>
 
@@ -29,11 +29,11 @@
         <div *ngIf="!section" class="section">
             <h3>Crear Nueva Publicación</h3>
             <label class="label-text">Título del articulo</label>
-            <input type="text" [(ngModel)]="publication.titulo" class="input-field" placeholder="Título">
+            <input type="text" [(ngModel)]="publication.titulo_publicacion" class="input-field" placeholder="Título">
             <label class="label-text">Año de publicación</label>
-            <input type="text" [(ngModel)]="publication.anio" class="input-field" placeholder="Año">
+            <input type="text" [(ngModel)]="publication.anno_publicacion" class="input-field" placeholder="Año">
             <label class="label-text">Revista</label>
-            <input type="text" [(ngModel)]="publication.revista" class="input-field" placeholder="Revista">
+            <input type="text" [(ngModel)]="publication.nombre_revista" class="input-field" placeholder="Revista">
             <button class="btn btn-danger" (click)="createPublication()">Crear</button>
         </div>
     </div>

@@ -1,0 +1,31 @@
+<!-- publicaciones.component.html -->
+
+<div class="container">
+    <h1>Lista de Publicaciones</h1>
+    <select (change)="mostrarDetalles($event)" class="select-publicacion">
+      <option value="">Selecciona una publicación</option>
+      <option *ngFor="let publicacion of publicaciones" [value]="publicacion.titulo_publicacion">{{ publicacion.titulo_publicacion }}</option>
+    </select>
+  
+    <table class="tabla-detalles" id="detalles-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Año</th>
+            <th>Revista</th>
+            <th>Proyecto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pub of selectedPubs">
+            <td>{{ pub.titulo_publicacion }}</td>
+            <td>{{ pub.anno_publicacion }}</td>
+            <td>{{ pub.nombre_revista }}</td>
+            <td>{{ pub.proyecto }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      
+  </div>
+  

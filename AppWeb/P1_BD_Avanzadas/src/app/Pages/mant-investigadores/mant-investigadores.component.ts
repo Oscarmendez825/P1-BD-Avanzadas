@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Investigador } from 'src/app/Interfaces/Investigador';
+import { GetService } from 'src/app/Services/get-service';
+import { PostService } from 'src/app/Services/post-service';
+import { PutService } from 'src/app/Services/put-service';
 
 
 @Component({
@@ -9,47 +12,45 @@ import { Investigador } from 'src/app/Interfaces/Investigador';
 })
 export class MantInvestigadoresComponent {
   
-  investigadores: Investigador[] = [
-    {
-      "id": 1,
-      "nombreCompleto": "Juan Pérez",
-      "tituloAcademico": "Doctor en Ciencias",
-      "institucion": "Universidad XYZ",
-      "correoElectronico": "juan.perez@example.com"
-    },
-    {
-      "id": 2,
-      "nombreCompleto": "María Rodríguez",
-      "tituloAcademico": "Licenciada en Biología",
-      "institucion": "Instituto ABC",
-      "correoElectronico": "maria.rodriguez@example.com"
-    },
-    {
-      "id": 3,
-      "nombreCompleto": "Carlos González",
-      "tituloAcademico": "Máster en Física",
-      "institucion": "Universidad 123",
-      "correoElectronico": "carlos.gonzalez@example.com"
-    }
-  ];
+  investigadores: Investigador[] = [];
   investigador: Investigador = {
     id: 0,
-    nombreCompleto: '',
-    tituloAcademico: '',
+    nombre_completo: '',
+    titulo_academico: '',
     institucion: '',
-    correoElectronico: ''
+    email: ''
   };
   investigatorSelected: number = 0;
   section: boolean = false;
 
+  constructor(private apiService: GetService, private postService: PostService, private putService: PutService) { }
 
+  ngOnInit(): void {
+    this.getInvestigadores();
+  }
+
+  getInvestigadores(){
+    this.apiService.GetInvestigadores().subscribe(
+      (res) => {
+        this.investigadores = res;
+      }
+    );
+  }
 
   modifyInvestigator() {
-    
+    this.putService.ModificarInvestigador(this.investigador).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   createInvestigator() {
-    
+    this.postService.crearInvestigador(this.investigador).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   toggleSection(){
@@ -59,11 +60,11 @@ export class MantInvestigadoresComponent {
         this.section = false;
       }
       this.investigador = {
-        id: 0,
-        nombreCompleto: '',
-        tituloAcademico: '',
+        id:0,
+        nombre_completo: '',
+        titulo_academico: '',
         institucion: '',
-        correoElectronico: ''
+        email: ''
       };
   }
 

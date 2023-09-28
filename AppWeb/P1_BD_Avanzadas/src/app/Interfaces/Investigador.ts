@@ -1,8 +1,8 @@
 export interface Investigador {
-    id: number; // Un identificador único para cada investigador
-    nombreCompleto: string;
-    tituloAcademico: string;
+    id?: number; // Un identificador único para cada investigador
+    nombre_completo: string;
+    titulo_academico: string;
     institucion: string;
-    correoElectronico: string;
+    email: string;
   }
   

@@ -9,10 +9,8 @@ import { GetService } from 'src/app/Services/get-service';
 })
 export class BusquedaPublicacionComponent {
   publicaciones: Publicacion[] = [];
-
+  selectedPubs: Publicacion[] = [];
   publicacionesSeleccionadas: string[] = [];
-  detallesPublicaciones: Publicacion[] = [];
-  detallesPublicacion: Publicacion | undefined;
 
   constructor(private apiService: GetService) { }
 
@@ -28,8 +26,18 @@ export class BusquedaPublicacionComponent {
     );
   }
 
+  getPublicacionBusqueda(tituloSeleccionado:string){
+    this.apiService.GetPublicacionBusqueda(tituloSeleccionado).subscribe(
+      (res) => {
+        this.selectedPubs.push(res);
+      }
+    );
+  }
+
   mostrarDetalles(event: any) {
     const tituloSeleccionado: string = event.target.value;
-    this.detallesPublicacion = this.publicaciones.find(pub => pub.titulo_publicacion === tituloSeleccionado);
+    this.publicaciones = this.publicaciones.filter((publicacion: any) => publicacion.titulo_publicacion !== tituloSeleccionado);
+    this.getPublicacionBusqueda(tituloSeleccionado);
+    
   }
 }

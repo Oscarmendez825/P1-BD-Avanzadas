@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Project } from 'src/app/Interfaces/Project';
 import { GetService } from 'src/app/Services/get-service';
 import { PostService } from 'src/app/Services/post-service';
+import { PutService } from 'src/app/Services/put-service';
 
 @Component({
   selector: 'app-mant-proyectos',
@@ -22,7 +23,7 @@ export class MantProyectosComponent {
   projectSelected: string = "";
   section: boolean = false;
   
-  constructor(private apiService: GetService, private postService: PostService) { }
+  constructor(private apiService: GetService, private postService: PostService, private putService: PutService) { }
 
   ngOnInit(): void {
     this.getProyectos();
@@ -38,7 +39,11 @@ export class MantProyectosComponent {
 
 
   modifyProject() {
-    
+    this.putService.ModificarProyectos(this.project).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   createProject() {

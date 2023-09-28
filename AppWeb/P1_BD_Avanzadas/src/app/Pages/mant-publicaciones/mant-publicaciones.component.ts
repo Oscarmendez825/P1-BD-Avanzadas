@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Publicacion } from 'src/app/Interfaces/Publicacion';
 import { GetService } from 'src/app/Services/get-service';
 import { PostService } from 'src/app/Services/post-service';
+import { PutService } from 'src/app/Services/put-service';
 
 @Component({
   selector: 'app-mant-publicaciones',
@@ -21,7 +22,7 @@ export class MantPublicacionesComponent {
   projectSelected: string = "";
   section: boolean = false;
 
-  constructor(private apiService: GetService, private postService: PostService) { }
+  constructor(private apiService: GetService, private postService: PostService, private putService: PutService) { }
 
   ngOnInit(): void {
     this.getPublicaciones();
@@ -36,7 +37,11 @@ export class MantPublicacionesComponent {
   }
 
   modifyPublication() {
-
+    this.putService.ModificarPublicacion(this.publication).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   createPublication() {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Investigador } from 'src/app/Interfaces/Investigador';
 import { GetService } from 'src/app/Services/get-service';
 import { PostService } from 'src/app/Services/post-service';
+import { PutService } from 'src/app/Services/put-service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class MantInvestigadoresComponent {
   investigatorSelected: number = 0;
   section: boolean = false;
 
-  constructor(private apiService: GetService, private postService: PostService) { }
+  constructor(private apiService: GetService, private postService: PostService, private putService: PutService) { }
 
   ngOnInit(): void {
     this.getInvestigadores();
@@ -37,7 +38,11 @@ export class MantInvestigadoresComponent {
   }
 
   modifyInvestigator() {
-    
+    this.putService.ModificarInvestigador(this.investigador).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   createInvestigator() {

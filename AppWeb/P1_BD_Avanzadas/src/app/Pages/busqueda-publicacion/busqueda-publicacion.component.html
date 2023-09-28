@@ -7,7 +7,7 @@
       <option *ngFor="let publicacion of publicaciones" [value]="publicacion.titulo_publicacion">{{ publicacion.titulo_publicacion }}</option>
     </select>
   
-    <table *ngIf="detallesPublicacion" class="tabla-detalles" id="detalles-table">
+    <table class="tabla-detalles" id="detalles-table">
         <thead>
           <tr>
             <th>Título</th>
@@ -17,11 +17,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ detallesPublicacion.titulo_publicacion }}</td>
-            <td>{{ detallesPublicacion.anno_publicacion }}</td>
-            <td>{{ detallesPublicacion.nombre_revista }}</td>
-            <td>{{ detallesPublicacion.proyecto }}</td>
+          <tr *ngFor="let pub of selectedPubs">
+            <td>{{ pub.titulo_publicacion }}</td>
+            <td>{{ pub.anno_publicacion }}</td>
+            <td>{{ pub.nombre_revista }}</td>
+            <td>{{ pub.proyecto }}</td>
           </tr>
         </tbody>
       </table>

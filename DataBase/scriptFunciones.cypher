@@ -1,3 +1,14 @@
+//SUBIRLO A SANDBOX
+//ASOCIAR POR ID INVESTIGADOR Y NOMBRE DE PROYECTO
+//ASOCIAR POR NOMBRES ARTICULO A PROYECTO
+//AGREGAR INVESTIGADORES, PROYECTOS Y ARTICULOS (CON ID AUTOMATICO)
+//ACTUALIZAR DATOS DE INVESTIGADORES POR ID
+//REVISAR LAS FUNCIONES QUE USABAN (proyecto)-[:PUBLICADO_EN]->(publicacion) QUE SE CAMBIO ESTA RELACION
+//CAMBIAR EL NOMBRE DE LAS TABLAS DE Top 5 para que sean (nombre, cantidad)
+//BUSQUEDA DE PROYECTO: PASAR EL TITULO DEL PROYECTO Y BUSCAR PRIMERO LOS INVESTIGADORES DE UN PROYECTO Y LUEGO LAS PUBLICACIONES RELACIONADAS (separarlas)
+//BUSQUEDA DE PUBLICACIONES, AREA: separarlos, primero proyectos y luego publicaciones (se buscan por nombre de area)
+//BUSQUEDA DE COLEGAS: SOLO DEVOLVER DATOS DE LOS COLEGAS
+
 //*****Carga de tablas*****
 //Cargar investigadores
 LOAD CSV WITH HEADERS FROM 'file:///investigadores.csv' AS row
@@ -38,9 +49,7 @@ CREATE (investigador)-[:TRABAJA_EN]->(proyecto);
 LOAD CSV WITH HEADERS FROM 'file:///PublicacionesProy.csv' AS row
 MATCH (proyecto:Proyecto {idPry: toInteger(row.idProyecto)})
 MATCH (publicacion:Publicacion {idPub: toInteger(row.idArt)})
-CREATE (proyecto)-[:PUBLICADO_EN]->(publicacion);
-//CREATE (publicacion)-[:REALIZADA_EN]->(proyecto); **************************Correir, esta relacion es la que sirve, la de arriba esta mal***********************
-
+CREATE (publicacion)-[:REALIZADA_EN]->(proyecto);
 
 //*****Actualizacion de datos*****
 //Actualiza los valores de una publicacion por su ID

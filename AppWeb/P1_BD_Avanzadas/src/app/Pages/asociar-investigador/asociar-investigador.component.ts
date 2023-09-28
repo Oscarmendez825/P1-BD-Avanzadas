@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Investigador } from 'src/app/Interfaces/Investigador';
 import { Project } from 'src/app/Interfaces/Project';
+import { GetService } from 'src/app/Services/get-service';
+import { PostService } from 'src/app/Services/post-service';
 
 @Component({
   selector: 'app-asociar-investigador',
@@ -8,29 +10,39 @@ import { Project } from 'src/app/Interfaces/Project';
   styleUrls: ['./asociar-investigador.component.css']
 })
 export class AsociarInvestigadorComponent {
-  investigadores: Investigador[] = [
-    {
-      id: 1,
-      nombreCompleto: 'Investigador 1',
-      tituloAcademico: 'PhD',
-      institucion: 'Universidad A',
-      correoElectronico: 'investigador1@example.com'
-    },
-    // Agrega más investigadores aquí
-  ];
-
-  proyectos: Project[] = [
-    {
-      titulo: 'Proyecto 1',
-      anio: 2023,
-      duracion: 2,
-      area: 'Ciencia'
-    },
-    // Agrega más proyectos aquí
-  ];
+  investigadores: Investigador[] = [];
+  proyectos: Project[] = [];
   selectedInvestigador: number | undefined;
   selectedProyecto: string | undefined;
-  isButtonDisabled: boolean = true; // Inicialmente, el botón estará deshabilitado
+  isButtonDisabled: boolean = true; 
+
+  afiliar = {
+    'investigador': 0,
+    'proyecto': ''
+  }
+
+  constructor(private apiService: GetService, private postService: PostService) { }
+
+  ngOnInit(): void {
+    this.getInvestigadores();
+    this.getProyectos();
+  }
+
+  getInvestigadores(){
+    this.apiService.GetInvestigadores().subscribe(
+      (res) => {
+        this.investigadores = res;
+      }
+    );
+  }
+
+  getProyectos(){
+    this.apiService.GetProyectos().subscribe(
+      (res) => {
+        this.proyectos = res;
+      }
+    );
+  }
 
 
   checkFormValidity(): void {
@@ -38,7 +50,13 @@ export class AsociarInvestigadorComponent {
   }
   afiliarInvestigador(): void {
     if (this.selectedInvestigador && this.selectedProyecto) {
-      console.log(`Se afilió al investigador ${this.selectedInvestigador} al proyecto ${this.selectedProyecto}`);
+      this.afiliar.investigador = this.selectedInvestigador
+      this.afiliar.proyecto = this.selectedProyecto
+      this.postService.AfiliarInvestigador(this.afiliar).subscribe(
+        (res) => {
+          location.reload();
+        }
+      );
     }
   }
 

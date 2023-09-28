@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Investigador } from 'src/app/Interfaces/Investigador';
+import { GetService } from 'src/app/Services/get-service';
 
 @Component({
   selector: 'app-busqueda-colegas',
@@ -7,19 +8,32 @@ import { Investigador } from 'src/app/Interfaces/Investigador';
   styleUrls: ['./busqueda-colegas.component.css']
 })
 export class BusquedaColegasComponent {
-  investigadores: Investigador[] = [
-    {
-      id: 1,
-      nombreCompleto: 'Investigador 1',
-      tituloAcademico: 'Doctor en Ciencias',
-      institucion: 'Universidad A',
-      correoElectronico: 'investigador1@example.com',
-    },
-    // Agrega más investigadores según sea necesario
-  ];
+  investigadores: Investigador[] = [];
 
   investigadorSeleccionado: Investigador | null = null;
   investigadoresColegas: Investigador[] = [];
+
+  constructor(private apiService: GetService) { }
+
+  ngOnInit(): void {
+    this.getInvestigadores();
+  }
+
+  getInvestigadores(){
+    this.apiService.GetInvestigadores().subscribe(
+      (res) => {
+        this.investigadores = res;
+      }
+    );
+  }
+
+  getInvestigadorColegas(name:string){
+    this.apiService.GetInvestigadorColegas(name).subscribe(
+      (res) => {
+        this.investigadoresColegas = res;
+      }
+    );
+  }
 
   seleccionarInvestigador(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -30,31 +44,7 @@ export class BusquedaColegasComponent {
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        // Simulamos la obtención de las investigaciones del investigador seleccionado.
-        this.investigadoresColegas = [
-          {
-            "id": 1,
-            "nombreCompleto": "Juan Pérez",
-            "tituloAcademico": "Doctor en Ciencias",
-            "institucion": "Universidad XYZ",
-            "correoElectronico": "juan.perez@example.com"
-          },
-          {
-            "id": 2,
-            "nombreCompleto": "María Rodríguez",
-            "tituloAcademico": "Licenciada en Biología",
-            "institucion": "Instituto ABC",
-            "correoElectronico": "maria.rodriguez@example.com"
-          },
-          {
-            "id": 3,
-            "nombreCompleto": "Carlos González",
-            "tituloAcademico": "Máster en Física",
-            "institucion": "Universidad 123",
-            "correoElectronico": "carlos.gonzalez@example.com"
-          }
-          // Agrega más investigaciones según sea necesario
-        ];
+        this.getInvestigadorColegas(investigadorSeleccionado.nombreCompleto);
       }
     }
   }

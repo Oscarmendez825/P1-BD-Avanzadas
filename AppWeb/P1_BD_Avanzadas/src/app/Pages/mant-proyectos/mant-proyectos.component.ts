@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Project } from 'src/app/Interfaces/Project';
+import { GetService } from 'src/app/Services/get-service';
+import { PostService } from 'src/app/Services/post-service';
 
 @Component({
   selector: 'app-mant-proyectos',
@@ -7,38 +9,7 @@ import { Project } from 'src/app/Interfaces/Project';
   styleUrls: ['./mant-proyectos.component.css']
 })
 export class MantProyectosComponent {
-  projects: Project[] = [
-    {
-      "titulo": "Investigación sobre Cambio Climático",
-      "anio": 2022,
-      "duracion": 3,
-      "area": "Nature"
-    },
-    {
-      "titulo": "Estudio de Energía Renovable",
-      "anio": 2023,
-      "duracion": 2,
-      "area": "Science"
-    },
-    {
-      "titulo": "Desarrollo de Inteligencia Artificial",
-      "anio": 2024,
-      "duracion": 4,
-      "area": "Journal of Artificial Intelligence Research"
-    },
-    {
-      "titulo": "Proyecto de Ciencia de Datos",
-      "anio": 2022,
-      "duracion": 3,
-      "area": "Data Science Journal"
-    },
-    {
-      "titulo": "Investigación en Medicina Genómica",
-      "anio": 2023,
-      "duracion": 2,
-      "area": "Genome Research"
-    }
-  ];
+  projects: Project[] = [];
   
   project: Project = {
     titulo: '',
@@ -49,7 +20,20 @@ export class MantProyectosComponent {
 
   projectSelected: string = "";
   section: boolean = false;
+  
+  constructor(private apiService: GetService, private postService: PostService) { }
 
+  ngOnInit(): void {
+    this.getProyectos();
+  }
+
+  getProyectos(){
+    this.apiService.GetProyectos().subscribe(
+      (res) => {
+        this.projects = res;
+      }
+    );
+  }
 
 
   modifyProject() {
@@ -57,7 +41,11 @@ export class MantProyectosComponent {
   }
 
   createProject() {
-    
+    this.postService.crearProyecto(this.project).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   toggleSection(){

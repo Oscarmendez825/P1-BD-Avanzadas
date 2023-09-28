@@ -22,6 +22,7 @@ import { BusquedaAreasComponent } from './Pages/busqueda-areas/busqueda-areas.co
 import { BusquedaColegasComponent } from './Pages/busqueda-colegas/busqueda-colegas.component';
 import { AsociarInvestigadorComponent } from './Pages/asociar-investigador/asociar-investigador.component';
 import { AsociarArticuloComponent } from './Pages/asociar-articulo/asociar-articulo.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { AsociarArticuloComponent } from './Pages/asociar-articulo/asociar-artic
     BrowserAnimationsModule,
     FontAwesomeModule,
     FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

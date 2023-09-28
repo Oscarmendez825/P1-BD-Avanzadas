@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Investigador } from 'src/app/Interfaces/Investigador';
 import { Project } from 'src/app/Interfaces/Project';
+import { GetService } from 'src/app/Services/get-service';
 
 @Component({
   selector: 'app-busqueda-investigador',
@@ -9,19 +10,32 @@ import { Project } from 'src/app/Interfaces/Project';
 })
 export class BusquedaInvestigadorComponent {
 
-  investigadores: Investigador[] = [
-    {
-      id: 1,
-      nombreCompleto: 'Investigador 1',
-      tituloAcademico: 'Doctor en Ciencias',
-      institucion: 'Universidad A',
-      correoElectronico: 'investigador1@example.com',
-    },
-    // Agrega más investigadores según sea necesario
-  ];
+  investigadores: Investigador[] = [];
 
   investigadorSeleccionado: Investigador | null = null;
   investigacionesInvestigador: Project[] = [];
+
+  constructor(private apiService: GetService) { }
+
+  ngOnInit(): void {
+    this.getInvestigadores();
+  }
+
+  getInvestigadores(){
+    this.apiService.GetInvestigadores().subscribe(
+      (res) => {
+        this.investigadores = res;
+      }
+    );
+  }
+
+  getProyectosInvestigador(name:string){
+    this.apiService.GetProyectosInvestigador(name).subscribe(
+      (res) => {
+        this.investigacionesInvestigador = res;
+      }
+    );
+  }
 
   seleccionarInvestigador(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -32,16 +46,7 @@ export class BusquedaInvestigadorComponent {
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        // Simulamos la obtención de las investigaciones del investigador seleccionado.
-        this.investigacionesInvestigador = [
-          {
-            titulo: 'Investigación 1',
-            anio: 2020,
-            duracion: 12,
-            area: 'Ciencias',
-          },
-          // Agrega más investigaciones según sea necesario
-        ];
+        this.getProyectosInvestigador(investigadorSeleccionado.nombreCompleto);
       }
     }
   }

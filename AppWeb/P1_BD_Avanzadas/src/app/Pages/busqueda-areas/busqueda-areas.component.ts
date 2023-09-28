@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Area } from 'src/app/Interfaces/Area';
 import { Project } from 'src/app/Interfaces/Project';
 import { Publicacion } from 'src/app/Interfaces/Publicacion';
+import { GetService } from 'src/app/Services/get-service';
 
 @Component({
   selector: 'app-busqueda-areas',
@@ -11,21 +12,38 @@ import { Publicacion } from 'src/app/Interfaces/Publicacion';
 export class BusquedaAreasComponent {
   investigaciones: Project[] = [];
   publicaciones: Publicacion[] = [];
-  areas: Area[] = [
-    {
-      "nombre": "Área 1",
-      "cantidad": 0
-    },
-    {
-      "nombre": "Área 2",
-      "cantidad": 0
-    },
-    {
-      "nombre": "Área 3",
-      "cantidad": 0
-    }
-  ];
+  areas: Area[] = [];
   areaSeleccionada: Area | null = null;
+
+  constructor(private apiService: GetService) { }
+
+  ngOnInit(): void {
+    this.getAreas();
+  }
+
+  getAreas(){
+    this.apiService.GetAreas().subscribe(
+      (res) => {
+        this.areas = res;
+      }
+    );
+  }
+
+  getAreaProyectos(name:string){
+    this.apiService.GetAreaProyectos(name).subscribe(
+      (res) => {
+        this.investigaciones = res;
+      }
+    );
+  }
+
+  getAreaPublicaciones(name:string){
+    this.apiService.GetAreaPublicaciones(name).subscribe(
+      (res) => {
+        this.publicaciones = res;
+      }
+    );
+  }
 
   seleccionarArea(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -36,46 +54,8 @@ export class BusquedaAreasComponent {
   
       if (areaSeleccionada) {
         this.areaSeleccionada = areaSeleccionada;
-        this.investigaciones = [
-          {
-            "titulo": "Investigación sobre Cambio Climático",
-            "anio": 2022,
-            "duracion": 3,
-            "area": "Nature"
-          },
-          {
-            "titulo": "Estudio de Energía Renovable",
-            "anio": 2023,
-            "duracion": 2,
-            "area": "Science"
-          },
-          {
-            "titulo": "Desarrollo de Inteligencia Artificial",
-            "anio": 2024,
-            "duracion": 4,
-            "area": "Journal of Artificial Intelligence Research"
-          },
-          // Agrega más investigadores según sea necesario
-        ];
-
-        this.publicaciones = [
-          {
-            "titulo": "Investigación sobre Cambio Climático",
-            "anio": 2022,
-            "revista": "Nature"
-          },
-          {
-            "titulo": "Estudio de Energía Renovable",
-            "anio": 2023,
-            "revista": "Science"
-          },
-          {
-            "titulo": "Desarrollo de Inteligencia Artificial",
-            "anio": 2024,
-            "revista": "Journal of Artificial Intelligence Research"
-          },
-        ];
-        
+        this.getAreaPublicaciones(areaSeleccionada.nombre);
+        this.getAreaProyectos(areaSeleccionada.nombre);
       }
     }
   }

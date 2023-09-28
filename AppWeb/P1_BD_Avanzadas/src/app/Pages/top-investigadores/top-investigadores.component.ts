@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TopInvestigador } from 'src/app/Interfaces/TopInvestigador';
+import { GetService } from 'src/app/Services/get-service';
 
 @Component({
   selector: 'app-top-investigadores',
@@ -7,27 +8,20 @@ import { TopInvestigador } from 'src/app/Interfaces/TopInvestigador';
   styleUrls: ['./top-investigadores.component.css']
 })
 export class TopInvestigadoresComponent {
-  top: TopInvestigador[] = [
-    {
-      "nombre": "Investigador 1",
-      "cantidadProyectos": 15
-    },
-    {
-      "nombre": "Investigador 2",
-      "cantidadProyectos": 12
-    },
-    {
-      "nombre": "Investigador 3",
-      "cantidadProyectos": 10
-    },
-    {
-      "nombre": "Investigador 4",
-      "cantidadProyectos": 8
-    },
-    {
-      "nombre": "Investigador 5",
-      "cantidadProyectos": 5
-    }
-  ];
+  top: TopInvestigador[] = [];
+  
+  constructor(private apiService: GetService) { }
+
+  ngOnInit(): void {
+    this.getTopInvestigadores();
+  }
+
+  getTopInvestigadores(){
+    this.apiService.GetTopInvestigadores().subscribe(
+      (res) => {
+        this.top = res;
+      }
+    );
+  }
   
 }

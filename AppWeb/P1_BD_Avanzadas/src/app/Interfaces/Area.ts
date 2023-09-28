@@ -1,4 +1,4 @@
 export interface Area {
     nombre: string
-    cantidad: number
+    cantidad?: number
 }

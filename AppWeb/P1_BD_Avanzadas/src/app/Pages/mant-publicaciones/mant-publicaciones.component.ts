@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Publicacion } from 'src/app/Interfaces/Publicacion';
+import { GetService } from 'src/app/Services/get-service';
+import { PostService } from 'src/app/Services/post-service';
 
 @Component({
   selector: 'app-mant-publicaciones',
@@ -7,33 +9,7 @@ import { Publicacion } from 'src/app/Interfaces/Publicacion';
   styleUrls: ['./mant-publicaciones.component.css']
 })
 export class MantPublicacionesComponent {
-  publications: Publicacion[] = [
-    {
-      "titulo": "Investigación sobre Cambio Climático",
-      "anio": 2022,
-      "revista": "Nature"
-    },
-    {
-      "titulo": "Estudio de Energía Renovable",
-      "anio": 2023,
-      "revista": "Science"
-    },
-    {
-      "titulo": "Desarrollo de Inteligencia Artificial",
-      "anio": 2024,
-      "revista": "Journal of Artificial Intelligence Research"
-    },
-    {
-      "titulo": "Proyecto de Ciencia de Datos",
-      "anio": 2022,
-      "revista": "Data Science Journal"
-    },
-    {
-      "titulo": "Investigación en Medicina Genómica",
-      "anio": 2023,
-      "revista": "Genome Research"
-    }
-  ];
+  publications: Publicacion[] = [];
 
   publication: Publicacion = {
     titulo: '',
@@ -44,12 +20,30 @@ export class MantPublicacionesComponent {
   projectSelected: string = "";
   section: boolean = false;
 
+  constructor(private apiService: GetService, private postService: PostService) { }
+
+  ngOnInit(): void {
+    this.getPublicaciones();
+  }
+
+  getPublicaciones(){
+    this.apiService.GetPublicaciones().subscribe(
+      (res) => {
+        this.publications = res;
+      }
+    );
+  }
+
   modifyPublication() {
 
   }
 
   createPublication() {
-
+    this.postService.crearPublicacion(this.publication).subscribe(
+      (res) => {
+        location.reload();
+      }
+    );
   }
 
   toggleSection() {

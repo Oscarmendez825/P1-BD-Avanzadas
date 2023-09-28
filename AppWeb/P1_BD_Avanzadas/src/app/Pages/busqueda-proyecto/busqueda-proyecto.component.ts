@@ -52,12 +52,12 @@ export class BusquedaProyectoComponent {
     const selectedValue = selectElement.value;
   
     if (selectedValue) {
-      const proyectoSeleccionado = this.proyectos.find(proyecto => proyecto.titulo === selectedValue);
+      const proyectoSeleccionado = this.proyectos.find(proyecto => proyecto.titulo_proyecto === selectedValue);
   
       if (proyectoSeleccionado) {
         this.proyectoSeleccionado = proyectoSeleccionado;
-        this.getInvestigadoresProyecto(proyectoSeleccionado.titulo);
-        this.getPublicacionesProyecto(proyectoSeleccionado.titulo);
+        this.getInvestigadoresProyecto(proyectoSeleccionado.titulo_proyecto);
+        this.getPublicacionesProyecto(proyectoSeleccionado.titulo_proyecto);
       }
     }
   }

@@ -7,7 +7,7 @@
             <select id="investigadorSelect" (change)="seleccionarInvestigador($event)" class="investigador-select">
                 <option value="" disabled selected>Elige un investigador</option>
                 <option *ngFor="let investigador of investigadores" [ngValue]="investigador">{{
-                    investigador.nombreCompleto }}</option>
+                    investigador.nombre_completo }}</option>
             </select>
         </form>
 
@@ -15,11 +15,11 @@
         <table *ngIf="investigadorSeleccionado" class="investigador-table">
             <tr>
                 <th>Nombre Completo</th>
-                <td>{{ investigadorSeleccionado.nombreCompleto }}</td>
+                <td>{{ investigadorSeleccionado.nombre_completo }}</td>
             </tr>
             <tr>
                 <th>Título Académico</th>
-                <td>{{ investigadorSeleccionado.tituloAcademico }}</td>
+                <td>{{ investigadorSeleccionado.titulo_academico }}</td>
             </tr>
             <tr>
                 <th>Institución</th>
@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <th>Correo Electrónico</th>
-                <td>{{ investigadorSeleccionado.correoElectronico }}</td>
+                <td>{{ investigadorSeleccionado.email }}</td>
             </tr>
         </table>
 
@@ -37,7 +37,7 @@
                 <th>Nombre</th>
             </tr>
             <tr *ngFor="let investigador of investigadoresColegas">
-                <td>{{ investigador.nombreCompleto }}</td>
+                <td>{{ investigador.nombre_completo }}</td>
             </tr>
         </table>
     </div>

@@ -42,11 +42,11 @@ export class BusquedaInvestigadorComponent {
     const selectedValue = selectElement.value;
   
     if (selectedValue) {
-      const investigadorSeleccionado = this.investigadores.find(investigador => investigador.nombreCompleto === selectedValue);
+      const investigadorSeleccionado = this.investigadores.find(investigador => investigador.nombre_completo === selectedValue);
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        this.getProyectosInvestigador(investigadorSeleccionado.nombreCompleto);
+        this.getProyectosInvestigador(investigadorSeleccionado.nombre_completo);
       }
     }
   }

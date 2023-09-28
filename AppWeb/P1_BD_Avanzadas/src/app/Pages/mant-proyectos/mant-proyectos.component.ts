@@ -12,10 +12,11 @@ export class MantProyectosComponent {
   projects: Project[] = [];
   
   project: Project = {
-    titulo: '',
-    anio: 0,
-    duracion: 0,
-    area: ''
+    idPry: 0,
+    titulo_proyecto: '',
+    anno_inicio: 0,
+    duracion_meses: 0,
+    area_conocimiento: ''
   };
 
   projectSelected: string = "";
@@ -55,16 +56,17 @@ export class MantProyectosComponent {
         this.section = false;
       }
       this.project = {
-        titulo: '',
-        anio: 0,
-        duracion: 0,
-        area: ''
+        idPry: 0,
+        titulo_proyecto: '',
+        anno_inicio: 0,
+        duracion_meses: 0,
+        area_conocimiento: ''
       };
   }
 
   selectProject(){
     this.projects.forEach(element => {
-      if(element.titulo === this.projectSelected){
+      if(element.titulo_proyecto === this.projectSelected){
         this.project = element
       }
     });

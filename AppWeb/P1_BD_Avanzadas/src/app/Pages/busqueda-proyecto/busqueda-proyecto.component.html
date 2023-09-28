@@ -7,7 +7,7 @@
             <select id="investigadorSelect" (change)="seleccionarProyecto($event)" class="investigador-select">
                 <option value="" disabled selected>Elige un proyecto</option>
                 <option *ngFor="let proyecto of proyectos" [ngValue]="proyecto">{{
-                    proyecto.titulo }}</option>
+                    proyecto.titulo_proyecto }}</option>
             </select>
         </form>
 
@@ -15,19 +15,19 @@
         <table *ngIf="proyectoSeleccionado" class="investigador-table">
             <tr>
                 <th>Título</th>
-                <td>{{ proyectoSeleccionado.titulo }}</td>
+                <td>{{ proyectoSeleccionado.titulo_proyecto }}</td>
             </tr>
             <tr>
                 <th>Año</th>
-                <td>{{ proyectoSeleccionado.anio }}</td>
+                <td>{{ proyectoSeleccionado.anno_inicio }}</td>
             </tr>
             <tr>
                 <th>Área</th>
-                <td>{{ proyectoSeleccionado.area }}</td>
+                <td>{{ proyectoSeleccionado.area_conocimiento }}</td>
             </tr>
             <tr>
                 <th>Duración</th>
-                <td>{{ proyectoSeleccionado.duracion }}</td>
+                <td>{{ proyectoSeleccionado.duracion_meses }}</td>
             </tr>
         </table>
 
@@ -40,10 +40,10 @@
                 <th>Correo Electronico</th>
             </tr>
             <tr *ngFor="let investigador of investigadoresProyecto">
-                <td>{{ investigador.nombreCompleto }}</td>
-                <td>{{ investigador.tituloAcademico }}</td>
+                <td>{{ investigador.nombre_completo }}</td>
+                <td>{{ investigador.titulo_academico }}</td>
                 <td>{{ investigador.institucion }}</td>
-                <td>{{ investigador.correoElectronico }}</td>
+                <td>{{ investigador.email }}</td>
             </tr>
         </table>
 
@@ -55,9 +55,9 @@
                 <th>Revista</th>
             </tr>
             <tr *ngFor="let publicacion of publicacionesProyecto">
-                <td>{{ publicacion.titulo }}</td>
-                <td>{{ publicacion.anio }}</td>
-                <td>{{ publicacion.revista }}</td>
+                <td>{{ publicacion.titulo_publicacion }}</td>
+                <td>{{ publicacion.anno_publicacion }}</td>
+                <td>{{ publicacion.nombre_revista }}</td>
             </tr>
         </table>
     </div>

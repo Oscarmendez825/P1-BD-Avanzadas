@@ -3,7 +3,7 @@
   
     <label for="investigadorSelect">Selecciona un artículo:</label>
     <select id="investigadorSelect" [(ngModel)]="selectedArticulo" (change)="checkFormValidity()">
-      <option *ngFor="let articulo of articulos" [value]="articulo.titulo">{{ articulo.titulo }}</option>
+      <option *ngFor="let articulo of articulos" [value]="articulo.titulo_publicacion">{{ articulo.titulo_publicacion }}</option>
     </select>
   
     <br>
@@ -11,7 +11,7 @@
     <div *ngIf="selectedArticulo">
       <label for="proyectoSelect">Selecciona un Proyecto:</label>
       <select id="proyectoSelect" [(ngModel)]="selectedProyecto" (change)="checkFormValidity()">
-        <option *ngFor="let proyecto of proyectos" [value]="proyecto.titulo">{{ proyecto.titulo }}</option>
+        <option *ngFor="let proyecto of proyectos" [value]="proyecto.titulo_proyecto">{{ proyecto.titulo_proyecto }}</option>
       </select>
     </div>
     <button (click)="afiliarInvestigador()" [disabled]="isButtonDisabled">Afiliar Investigador</button>

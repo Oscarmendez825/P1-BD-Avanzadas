@@ -13,10 +13,11 @@ export class MantInvestigadoresComponent {
   
   investigadores: Investigador[] = [];
   investigador: Investigador = {
-    nombreCompleto: '',
-    tituloAcademico: '',
+    id: 0,
+    nombre_completo: '',
+    titulo_academico: '',
     institucion: '',
-    correoElectronico: ''
+    email: ''
   };
   investigatorSelected: number = 0;
   section: boolean = false;
@@ -54,11 +55,11 @@ export class MantInvestigadoresComponent {
         this.section = false;
       }
       this.investigador = {
-        id: 0,
-        nombreCompleto: '',
-        tituloAcademico: '',
+        id:0,
+        nombre_completo: '',
+        titulo_academico: '',
         institucion: '',
-        correoElectronico: ''
+        email: ''
       };
   }
 

@@ -12,9 +12,10 @@ export class MantPublicacionesComponent {
   publications: Publicacion[] = [];
 
   publication: Publicacion = {
-    titulo: '',
-    anio: 0,
-    revista: ''
+    idPub: 0,
+    titulo_publicacion: '',
+    anno_publicacion: 0,
+    nombre_revista: ''
   };
 
   projectSelected: string = "";
@@ -53,15 +54,16 @@ export class MantPublicacionesComponent {
       this.section = false;
     }
     this.publication = {
-      titulo: '',
-      anio: 0,
-      revista: ''
+      idPub: 0,
+      titulo_publicacion: '',
+      anno_publicacion: 0,
+      nombre_revista: ''
     };
   }
 
   selectPublication() {
     this.publications.forEach(element => {
-      if (element.titulo === this.projectSelected) {
+      if (element.titulo_publicacion === this.projectSelected) {
         this.publication = element
       }
     });

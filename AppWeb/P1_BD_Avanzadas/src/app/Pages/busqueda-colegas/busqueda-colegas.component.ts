@@ -40,11 +40,11 @@ export class BusquedaColegasComponent {
     const selectedValue = selectElement.value;
   
     if (selectedValue) {
-      const investigadorSeleccionado = this.investigadores.find(investigador => investigador.nombreCompleto === selectedValue);
+      const investigadorSeleccionado = this.investigadores.find(investigador => investigador.nombre_completo === selectedValue);
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        this.getInvestigadorColegas(investigadorSeleccionado.nombreCompleto);
+        this.getInvestigadorColegas(investigadorSeleccionado.nombre_completo);
       }
     }
   }

@@ -9,14 +9,14 @@
     <div *ngIf="section" class="section">
       <h3>Modificar Investigador</h3>
       <select [(ngModel)]="investigatorSelected" class="input-field" (change)="selectInvestigator()">
-        <option *ngFor="let investigador of investigadores" [value]="investigador.id">{{ investigador.nombreCompleto }}
+        <option *ngFor="let investigador of investigadores" [value]="investigador.id">{{ investigador.nombre_completo }}
         </option>
       </select>
       <div *ngIf="investigatorSelected" class="section">
-        <input type="text" [(ngModel)]="investigador.nombreCompleto" class="input-field" placeholder="Nombre completo">
-        <input type="text" [(ngModel)]="investigador.tituloAcademico" class="input-field" placeholder="Título académico">
+        <input type="text" [(ngModel)]="investigador.nombre_completo" class="input-field" placeholder="Nombre completo">
+        <input type="text" [(ngModel)]="investigador.titulo_academico" class="input-field" placeholder="Título académico">
         <input type="text" [(ngModel)]="investigador.institucion" class="input-field" placeholder="Institución">
-        <input type="email" [(ngModel)]="investigador.correoElectronico" class="input-field" placeholder="Correo electrónico">
+        <input type="email" [(ngModel)]="investigador.email" class="input-field" placeholder="Correo electrónico">
       </div>
       <button class="btn btn-danger" (click)="modifyInvestigator()">Modificar</button>
 
@@ -26,10 +26,10 @@
     <!-- Sección para crear nuevos investigadores -->
     <div *ngIf="!section" class="section">
       <h3>Crear Nuevo Investigador</h3>
-      <input type="text" [(ngModel)]="investigador.nombreCompleto" class="input-field" placeholder="Nombre completo">
-      <input type="text" [(ngModel)]="investigador.tituloAcademico" class="input-field" placeholder="Título académico">
+      <input type="text" [(ngModel)]="investigador.nombre_completo" class="input-field" placeholder="Nombre completo">
+      <input type="text" [(ngModel)]="investigador.titulo_academico" class="input-field" placeholder="Título académico">
       <input type="text" [(ngModel)]="investigador.institucion" class="input-field" placeholder="Institución">
-      <input type="email" [(ngModel)]="investigador.correoElectronico" class="input-field" placeholder="Correo electrónico">
+      <input type="email" [(ngModel)]="investigador.email" class="input-field" placeholder="Correo electrónico">
       <button class="btn btn-danger" (click)="createInvestigator()">Crear</button>
     </div>
   </div>

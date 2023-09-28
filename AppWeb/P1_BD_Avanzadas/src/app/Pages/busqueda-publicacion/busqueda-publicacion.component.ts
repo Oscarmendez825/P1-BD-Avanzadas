@@ -30,6 +30,6 @@ export class BusquedaPublicacionComponent {
 
   mostrarDetalles(event: any) {
     const tituloSeleccionado: string = event.target.value;
-    this.detallesPublicacion = this.publicaciones.find(pub => pub.titulo === tituloSeleccionado);
+    this.detallesPublicacion = this.publicaciones.find(pub => pub.titulo_publicacion === tituloSeleccionado);
   }
 }

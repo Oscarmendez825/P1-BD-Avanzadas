@@ -1,6 +1,7 @@
 export interface Project {
-    titulo: string,
-    anio: number,
-    duracion: number,
-    area: string
+    idPry?: number
+    titulo_proyecto: string,
+    anno_inicio: number,
+    duracion_meses: number,
+    area_conocimiento: string
 }

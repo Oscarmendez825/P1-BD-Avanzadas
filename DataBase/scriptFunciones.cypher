@@ -1,7 +1,7 @@
 //SUBIRLO A SANDBOX
-//ASOCIAR POR ID INVESTIGADOR Y NOMBRE DE PROYECTO
-//ASOCIAR POR NOMBRES ARTICULO A PROYECTO
-//AGREGAR INVESTIGADORES, PROYECTOS Y ARTICULOS (CON ID AUTOMATICO)
+
+
+
 //ACTUALIZAR DATOS DE INVESTIGADORES POR ID
 //REVISAR LAS FUNCIONES QUE USABAN (proyecto)-[:PUBLICADO_EN]->(publicacion) QUE SE CAMBIO ESTA RELACION
 //CAMBIAR EL NOMBRE DE LAS TABLAS DE Top 5 para que sean (nombre, cantidad)
@@ -51,6 +51,44 @@ MATCH (proyecto:Proyecto {idPry: toInteger(row.idProyecto)})
 MATCH (publicacion:Publicacion {idPub: toInteger(row.idArt)})
 CREATE (publicacion)-[:REALIZADA_EN]->(proyecto);
 
+//*****Agregar datos a los grafos*****
+
+//Agregar investigador
+MATCH (i:Investigador)
+WITH COALESCE(MAX(i.id), 0) AS max_id
+CREATE (nuevoInvestigador:Investigador {
+  id: max_id + 1,
+  nombre_completo: 'Nuevo Investigador',
+  titulo_academico: 'Título',
+  institucion: 'Institución',
+  email: 'correo@ejemplo.com'
+})
+RETURN nuevoInvestigador;
+
+//Agregar proyecto nuevo
+MATCH (p:Proyecto)
+WITH COALESCE(MAX(p.idPry), 0) AS max_id
+CREATE (nuevoProyecto:Proyecto {
+  idPry: max_id + 1,
+  titulo_proyecto: 'Nuevo Proyecto',
+  anno_inicio: 2023,  
+  duracion_meses: 12, 
+  area_conocimiento: 'Área de Conocimiento'
+})
+RETURN nuevoProyecto;
+
+//Agregar publicaciones nuevas
+MATCH (p:Publicacion)
+WITH COALESCE(MAX(p.idPub), 0) AS max_id
+CREATE (nuevaPublicacion:Publicacion {
+  idPub: max_id + 1,
+  titulo_publicacion: 'Nuevo Título',
+  anno_publicacion: 2023,
+  nombre_revista: 'Nombre de la Revista'
+})
+RETURN nuevaPublicacion;
+
+
 //*****Actualizacion de datos*****
 //Actualiza los valores de una publicacion por su ID
 MATCH (p:Publicacion {idPub: 1})
@@ -65,10 +103,16 @@ SET p.titulo_proyecto = 'Nuevo Título',
     p.duracion_meses = 12,
     p.area_conocimiento = 'Nueva Área';
 
-//Actualiza los valores de una investigacion por su ID
+//Actualiza los valores de un investigador por su ID
 MATCH (i:Investigador {id: 1})
 SET i.nombre_completo = 'Nuevo Nombre',
     i.titulo_academico = 'Nuevo Título Académico',
+    i.institucion = 'Nueva Institución',
+    i.email = 'nuevo_email@example.com';
+
+//Actualiza los valores de un investigador por su ID
+MATCH (i:Investigador {nombre_completo: 'nombre investigador'})
+SET i.titulo_academico = 'Nuevo Título Académico',
     i.institucion = 'Nueva Institución',
     i.email = 'nuevo_email@example.com';
 
@@ -95,30 +139,34 @@ RETURN p.titulo_proyecto;
 MATCH (p:Proyecto)
 RETURN p.area_conocimiento;
 
+//Devuelve los nombres de los investigadores
+MATCH (i:Investigador)
+RETURN i.nombre_completo;
+
 //Busqueda de investigador por nombre que devuelve toda su info y los proyectos donde participa
 MATCH (i:Investigador {nombre_completo: 'Nombre Investigador'})-[:TRABAJA_EN]->(p:Proyecto)
 WITH i, COLLECT({idProy: p.idPry, tituloProyecto: p.titulo_proyecto, annoInicio: p.anno_inicio, duracionMeses: p.duracion_meses, areaConocimiento: p.area_conocimiento}) AS proyectos
-RETURN i.id AS idInvestigador, i.titulo_academico AS tituloAcademico, i.institucion AS institucion, i.email AS correo, proyectos;
+RETURN i.id, i.titulo_academico, i.institucion, i.email, proyectos;
 
 //Busqueda de proyectos a partir de su nombre, devuelve info del proyecto, de los investigadores y de las publicaciones asociadas
 MATCH (p:Proyecto {titulo_proyecto: 'Titulo Proyecto'})
-RETURN [{idProy: p.idPry, annoInicio: p.anno_inicio , duracionMeses: p.duracion_meses, areaConocimiento: p.area_conocimiento}] AS proyecto,
-       [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombreCompleto: i.nombre_completo,tituloAcademico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
-       [(pb:Publicacion)<-[:PUBLICADO_EN]-(p) | {tituloPublicacion: pb.titulo_publicacion, annoPublicacion: pb.anno_publicacion, nombreRevista: pb.nombre_revista}] AS publicaciones;
+RETURN p.idPry, p.anno_inicio, p.duracion_meses, p.area_conocimiento AS proyecto,
+       [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombre_completo: i.nombre_completo, titulo_academico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
+       [(pb:Publicacion)-[:REALIZADA_EN]->(p) | {titulo_publicacion: pb.titulo_publicacion, anno_publicacion: pb.anno_publicacion, nombre_revista: pb.nombre_revista}] AS publicaciones;
 
 //Busqueda de publicaciones a partir de su titulo, devuelve informacion de estas y el nombre de los proyectos asociados
-MATCH (pb:Publicacion {titulo_publicacion: 'Titulo Publicacion'})<-[:PUBLICADO_EN]-(p:Proyecto)
-RETURN pb.idPub AS idPublicacion, pb.anno_publicacion AS annoPublicacion, pb.nombre_revista AS nombreRevista, p.titulo_proyecto AS tituloProyecto;
+MATCH (pb:Publicacion {titulo_publicacion: 'Titulo Publicacion'})-[:REALIZADA_EN]->(p:Proyecto)
+RETURN pb.idPub, pb.anno_publicacion, pb.nombre_revista, p.titulo_proyecto;
 
 //Busqueda de area de conocimiento por nombre del area, devuelve el nombre del area de conocimiento, los nombres de los proyectos asociados y de las publicaciones del area
-MATCH (p:Proyecto {area_conocimiento: 'Nombre area conocimiento'})-[:PUBLICADO_EN]->(pb:Publicacion)
-RETURN DISTINCT p.area_conocimiento AS areaConocimiento,
+MATCH (p:Proyecto {area_conocimiento: 'Nombre area conocimiento'})<-[:REALIZADA_EN]-(pb:Publicacion)
+RETURN DISTINCT p.area_conocimiento AS area_conocimiento,
        COLLECT(DISTINCT p.titulo_proyecto) AS proyectos,
        COLLECT(DISTINCT pb.titulo_publicacion) AS publicaciones;
 
 //Busqueda de colegas de un investigador a partir de su nombre, devuelve la informacion del investigador y el nombre de los investigadores con los que ha trabajado en otros proyectos.
 MATCH (i:Investigador {nombre_completo: 'Nombre investigador'})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
-RETURN  i.id AS idInvestigador, i.titulo_academico AS tituloAcademico, i.institucion AS institucion, i.email AS correo, COLLECT(DISTINCT i2.nombre_completo) AS nombresColegas;
+RETURN  i.id, i.titulo_academico, i.institucion, i.email, COLLECT(DISTINCT i2.nombre_completo) AS nombresColegas;
 
 
 //*****Asociar*****
@@ -135,36 +183,36 @@ CREATE (i)-[:TRABAJA_EN]->(p);
 //Asociar un articulo a un proyecto por ID
 MATCH (pb:Publicacion), (p:Proyecto)
 WHERE pb.idPub = 1 AND p.idPry = 2
-CREATE (pb)-[:PUBLICADO_EN]->(p);
+CREATE (pb)-[:REALIZADA_EN]->(p);
+
+//Asociar un investigador por ID a un proyecto por titulo del proyecto
+MATCH (i:Investigador), (p:Proyecto)
+WHERE i.id = 1 AND p.titulo_proyecto = 'titulo proyecto'
+CREATE (i)-[:TRABAJA_EN]->(p);
+
+//Asociar por nombre de articulo y titulo de proyecto
+MATCH (pb:Publicacion), (p:Proyecto)
+WHERE pb.titulo_publicacion = 'titulo publicacion' AND p.titulo_proyecto = 'titulo proyecto'
+CREATE (pb)-[:REALIZADA_EN]-> (p);
 
 //*****Top 5*****
 //Top 5 areas de conocimiento segun su cantidad de proyectos
 MATCH (p:Proyecto)
-WITH p.area_conocimiento AS areaConocimiento, COUNT(p) AS cantidadProyectos
-RETURN areaConocimiento, cantidadProyectos
-ORDER BY cantidadProyectos DESC
-LIMIT 5;
-
-//Top 5 instituciones segun la cantidad de proyectos
-MATCH (i:Institucion)<-[:TRABAJA_EN]-(p:Proyecto)
-WITH i, COUNT(p) AS cantidadProyectos
-RETURN i.nombre AS NombreInstitucion, cantidadProyectos
+WITH p.area_conocimiento AS area_conocimiento, COUNT(p) AS cantidadProyectos
+RETURN area_conocimiento, cantidadProyectos
 ORDER BY cantidadProyectos DESC
 LIMIT 5;
 
 //Top 5 instituciones segun la cantidad de proyectos que hay
 MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
-WITH i.institucion AS NombreInstitucion, COUNT(p) AS cantidadProyectos
-RETURN NombreInstitucion, cantidadProyectos
+WITH i.institucion AS institucion, COUNT(p) AS cantidadProyectos
+RETURN institucion, cantidadProyectos
 ORDER BY cantidadProyectos DESC
 LIMIT 5;
 
 //Top 5 investigadores segun la cantidad de proyectos en la que trabajan
 MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
 WITH i, i.institucion AS institucion, COUNT(p) AS cantidadProyectos
-RETURN i.nombre_completo AS nombreCompleto, institucion, cantidadProyectos
+RETURN i.nombre_completo AS nombre_completo, institucion, cantidadProyectos
 ORDER BY cantidadProyectos DESC
 LIMIT 5;
-
-
-

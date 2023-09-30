@@ -1,10 +1,5 @@
 //SUBIRLO A SANDBOX
 
-
-
-//ACTUALIZAR DATOS DE INVESTIGADORES POR ID
-//REVISAR LAS FUNCIONES QUE USABAN (proyecto)-[:PUBLICADO_EN]->(publicacion) QUE SE CAMBIO ESTA RELACION
-//CAMBIAR EL NOMBRE DE LAS TABLAS DE Top 5 para que sean (nombre, cantidad)
 //BUSQUEDA DE PROYECTO: PASAR EL TITULO DEL PROYECTO Y BUSCAR PRIMERO LOS INVESTIGADORES DE UN PROYECTO Y LUEGO LAS PUBLICACIONES RELACIONADAS (separarlas)
 //BUSQUEDA DE PUBLICACIONES, AREA: separarlos, primero proyectos y luego publicaciones (se buscan por nombre de area)
 //BUSQUEDA DE COLEGAS: SOLO DEVOLVER DATOS DE LOS COLEGAS
@@ -117,6 +112,7 @@ SET i.titulo_academico = 'Nuevo Título Académico',
     i.email = 'nuevo_email@example.com';
 
 
+
 //*****Busqueda de datos generales*****
 //Busqueda de TODOS los investigadores
 MATCH (i:Investigador)
@@ -199,20 +195,20 @@ CREATE (pb)-[:REALIZADA_EN]-> (p);
 //Top 5 areas de conocimiento segun su cantidad de proyectos
 MATCH (p:Proyecto)
 WITH p.area_conocimiento AS area_conocimiento, COUNT(p) AS cantidadProyectos
-RETURN area_conocimiento, cantidadProyectos
+RETURN area_conocimiento AS nombre, cantidadProyectos AS cantidad
 ORDER BY cantidadProyectos DESC
 LIMIT 5;
 
 //Top 5 instituciones segun la cantidad de proyectos que hay
 MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
-WITH i.institucion AS institucion, COUNT(p) AS cantidadProyectos
-RETURN institucion, cantidadProyectos
-ORDER BY cantidadProyectos DESC
+WITH i.institucion AS institucion, COUNT(p) AS cantidad
+RETURN institucion AS nombre, cantidad
+ORDER BY cantidad DESC
 LIMIT 5;
 
 //Top 5 investigadores segun la cantidad de proyectos en la que trabajan
 MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
-WITH i, i.institucion AS institucion, COUNT(p) AS cantidadProyectos
-RETURN i.nombre_completo AS nombre_completo, institucion, cantidadProyectos
-ORDER BY cantidadProyectos DESC
+WITH i, i.institucion AS institucion, COUNT(p) AS cantidad
+RETURN i.nombre_completo AS nombre, institucion, cantidad
+ORDER BY cantidad DESC
 LIMIT 5;

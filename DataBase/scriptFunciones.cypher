@@ -116,7 +116,7 @@ SET i.titulo_academico = 'Nuevo Título Académico',
 //*****Busqueda de datos generales*****
 //Busqueda de TODOS los investigadores
 MATCH (i:Investigador)
-RETURN i;
+RETURN DISTINCT i;
 
 //Busqueda de TODOS los proyectos
 MATCH (p:Proyecto)
@@ -175,6 +175,7 @@ CREATE (i)-[:TRABAJA_EN]->(p);
 MATCH (i:Investigador), (p:Proyecto)
 WHERE i.nombre_completo = 'Nombre del Investigador' AND p.titulo_proyecto = 'Título del Proyecto'
 CREATE (i)-[:TRABAJA_EN]->(p);
+ 
 
 //Asociar un articulo a un proyecto por ID
 MATCH (pb:Publicacion), (p:Proyecto)

@@ -99,11 +99,11 @@ router.get('/colegas/:id', async function(req, res) {
 /** PUT by id */
 router.put('/:id', async function(req, res){
     const id = parseInt(req.params.id);
-    const {titulo, ins, email} = req.body;
+    const { titulo_academico, institucion,email} = req.body;
     console.log('params', req.params);
     console.log('body', req.body)
-    const query = `MATCH (i:Investigador) WHERE id(i) = $id SET i.titulo_academico = $titulo, i.institucion = $ins, i.email = $email RETURN i;`;
-    const params = { id, titulo, ins, email };
+    const query = `MATCH (i:Investigador) WHERE id(i) = $id SET i.titulo_academico = $titulo_academico, i.institucion = $institucion, i.email = $email RETURN i;`;
+    const params = { id, titulo_academico, institucion, email };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         if(resultObj.records.length > 0) res.send(resultObj.records[0].get(0).properties)
@@ -116,11 +116,11 @@ router.put('/:id', async function(req, res){
 /** PUT by name */
 router.put('/name/:id', async function(req, res){
     const { id } = req.params;
-    const { titulo, ins, email } = req.body;
+    const { titulo_academico, institucion,email} = req.body;
     console.log('params', req.params);
     console.log('body', req.body);
-    const query = "MATCH (i:Investigador {nombre_completo: $id}) SET i.titulo_academico = $titulo, i.institucion = $ins, i.email = $email RETURN i;";
-    const params = { id, titulo, ins, email };
+    const query = "MATCH (i:Investigador {nombre_completo: $id}) SET i.titulo_academico = $titulo_academico, i.institucion = $institucion, i.email = $email RETURN i;";
+    const params = { id, titulo_academico, institucion, email };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -132,7 +132,7 @@ router.put('/name/:id', async function(req, res){
 
 /** post */
 router.post('/', async function(req, res){
-    const { nombre, titulo, ins, email } = req.body;
+    const { nombre_completo, titulo_academico, institucion,email} = req.body;
     console.log('params', req.params);
     console.log('body', req.body);
     const query = `
@@ -140,13 +140,13 @@ router.post('/', async function(req, res){
     WITH COALESCE(MAX(i.id), 0) AS max_id
     CREATE (nuevoInvestigador:Investigador {
         id: max_id + 1,
-        nombre_completo: $nombre,
-        titulo_academico: $titulo,
-        institucion: $ins,
+        nombre_completo: $nombre_completo,
+        titulo_academico: $titulo_academico,
+        institucion: $institucion,
         email: $email
     })
     RETURN nuevoInvestigador;`;
-    const params = { nombre, titulo, ins, email };
+    const params = { nombre_completo, titulo_academico, institucion, email };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -197,13 +197,13 @@ router.post('/csvPry', upload.single('csvFile'), async function(req, res){
 
 /** Asociar un investigador por Id por un proyecto */
 router.post('/asociar/Inv/Pro', async function(req, res){
-    const { id, idPry } = req.body;
+    const { investigador, proyecto } = req.body;
     console.log('body', req.body);
     const query = `
     MATCH (i:Investigador), (p:Proyecto)
-    WHERE id(i) = $id AND id(p) = $idPry
+    WHERE id(i) = $investigador AND id(p) = $proyecto
     CREATE (i)-[:TRABAJA_EN]->(p);`;
-    const params = { id: parseInt(id), idPry: parseInt(idPry) };
+    const params = { investigador: parseInt(investigador), proyecto: parseInt(proyecto) };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -214,13 +214,13 @@ router.post('/asociar/Inv/Pro', async function(req, res){
 });
 /** Asociar investigador a proyecto por nombres */
 router.post('/asociar/name', async function(req, res){
-    const { id, idPry } = req.body;
+    const { investigador, proyecto } = req.body;
     console.log('body', req.body);
     const query = `
     MATCH (i:Investigador), (p:Proyecto)
-    WHERE i.nombre_completo = $id AND p.titulo_proyecto = $idPry
+    WHERE i.nombre_completo = $investigador AND p.titulo_proyecto = $proyecto
     CREATE (i)-[:TRABAJA_EN]->(p)`;
-    const params = { id, idPry };
+    const params = { investigador, proyecto };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -231,13 +231,13 @@ router.post('/asociar/name', async function(req, res){
 });
 /** Asociar investigador a proyecto por ID */
 router.post('/asociar/InvId', async function(req, res){
-    const { id, idPry } = req.body;
+    const { investigador, proyecto } = req.body;
     console.log('body', req.body);
     const query = `
     MATCH (i:Investigador), (p:Proyecto)
-    WHERE id(i) = $id AND p.titulo_proyecto = $idPry
+    WHERE id(i) = $investigador AND p.titulo_proyecto = $proyecto
     CREATE (i)-[:TRABAJA_EN]->(p);`;
-    const params = { id: parseInt(id), idPry };
+    const params = { investigador: parseInt(investigador), proyecto };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);

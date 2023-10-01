@@ -51,15 +51,15 @@ router.get('/title/:id', async function(req, res) {
 });
 /** PUT by id */
 router.put('/:id', async function(req, res){
-    const { titulo, anno, nombre } = req.body;
+    const { titulo_publicacion,anno_publicacion,nombre_revista } = req.body;
     const { id } = req.params;
     console.log('body', req.body);
     console.log('params', req.params);
     const query = `MATCH (p:Publicacion {idPub: $id})
-        SET p.titulo_publicacion = $titulo,
-        p.anno_publicacion = $anno,
-        p.nombre_revista = $nombre;`;
-    const params = { id, titulo, anno: Number(anno), nombre };
+        SET p.titulo_publicacion = $titulo_publicacion,
+        p.anno_publicacion = $anno_publicacion,
+        p.nombre_revista = $nombre_revista;`;
+    const params = { id, titulo_publicacion, anno_publicacion: parseInt(anno_publicacion), nombre_revista };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -108,19 +108,19 @@ router.post('/csvPry', upload.single('csvFile'), async function(req, res){
 });
 /** Crear una nueva publicacion */
 router.post('/', async function(req, res){
-  const { nombre, titulo, ins, email } = req.body;
+  const { titulo_publicacion,anno_publicacion, nombre_revista } = req.body;
   console.log('body', req.body);
   const query = `
   MATCH (p:Publicacion)
   WITH COALESCE(MAX(p.idPub), 0) AS max_id
   CREATE (nuevaPublicacion:Publicacion {
     idPub: max_id + 1,
-    titulo_publicacion: 'Nuevo Título',
-    anno_publicacion: 2023,
-    nombre_revista: 'Nombre de la Revista'
+    titulo_publicacion: $titulo_publicacion,
+    anno_publicacion: $anno_publicacion,
+    nombre_revista: $nombre_revista
   })
   RETURN nuevaPublicacion;`;
-  const params = { nombre, titulo, ins, email };
+  const params = { nombre_revista, titulo_publicacion, anno_publicacion: parseInt(anno_publicacion) };
   try {
       const resultObj = await graphDBConnect.executeCypherQuery(query, params);
       res.send(resultObj.records);
@@ -131,13 +131,13 @@ router.post('/', async function(req, res){
 });
 /** Asociar un articulo a un proyecto por ID */
 router.post('/asociar/Inv/Pro', async function(req, res){
-  const { id, idPry } = req.body;
+  const { articulo, proyecto } = req.body;
   console.log('body', req.body);
   const query = `
   MATCH (pb:Publicacion), (p:Proyecto)
-  WHERE id(i) = $id AND id(p) = $idPry
+  WHERE id(i) = $articulo AND id(p) = $proyecto
   CREATE (pb)-[:REALIZADA_EN]->(p);`;
-  const params = { id: parseInt(id), idPry: parseInt(idPry) };
+  const params = { articulo: parseInt(articulo), proyecto: parseInt(proyecto) };
   try {
       const resultObj = await graphDBConnect.executeCypherQuery(query, params);
       res.send(resultObj.records);
@@ -149,13 +149,13 @@ router.post('/asociar/Inv/Pro', async function(req, res){
 /** Asociar por nombre de articulo y titulo de proyecto
  */
 router.post('/asociar/name', async function(req, res){
-  const { id, idPry } = req.body;
+  const { articulo, proyecto } = req.body;
   console.log('body', req.body);
   const query = `
   MATCH (pb:Publicacion), (p:Proyecto)
-  WHERE pb.titulo_publicacion = $id AND p.titulo_proyecto = $idPry
+  WHERE pb.titulo_publicacion = $articulo AND p.titulo_proyecto = $proyecto
   CREATE (pb)-[:REALIZADA_EN]-> (p);`;
-  const params = { id, idPry };
+  const params = { articulo, proyecto };
   try {
       const resultObj = await graphDBConnect.executeCypherQuery(query, params);
       res.send(resultObj.records);

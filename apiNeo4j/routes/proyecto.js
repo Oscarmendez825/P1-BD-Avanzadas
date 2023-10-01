@@ -114,17 +114,17 @@ router.get('/area/:id', async function(req, res) {
 
 /** PUT by id */
 router.put('/:id', async function(req, res) {
-    const { titulo, anno, meses, area } = req.body;
+    const { titulo_proyecto, anno_inicio, duracion_meses, area_conocimiento} = req.body;
     const { id } = req.params;
     console.log('body', req.body);
     const query = `
       MATCH (p:Proyecto {idPry: $id})
-      SET p.titulo_proyecto = $titulo,
-          p.anno_inicio = $anno,
-          p.duracion_meses = $meses,
-          p.area_conocimiento = $area
+      SET p.titulo_proyecto = $titulo_proyecto,
+          p.anno_inicio = $anno_inicio,
+          p.duracion_meses = $duracion_meses,
+          p.area_conocimiento = $area_conocimiento
       RETURN p;`;
-    const params = { id, titulo, anno: Number(anno), meses: Number(meses), area };
+    const params = { id, titulo_proyecto, anno_inicio: Number(anno_inicio), duracion_meses: Number(duracion_meses), area_conocimiento };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -158,7 +158,7 @@ router.post('/csv', upload.single('csvFile'), async function(req, res){
 
 /** post */
 router.post('/', async function(req, res){
-    const {  titulo, anno, meses, area } = req.body;
+    const { titulo_proyecto, anno_inicio, duracion_meses, area_conocimiento} = req.body;
     console.log('params', req.params);
     console.log('body', req.body);
     const query = `
@@ -166,13 +166,13 @@ router.post('/', async function(req, res){
     WITH COALESCE(MAX(p.idPry), 0) AS max_id
     CREATE (nuevoProyecto:Proyecto {
         idPry: max_id + 1,
-        titulo_proyecto: $titulo,
-        anno_inicio: $anno,  
-        duracion_meses: $meses, 
-        area_conocimiento: $area
+        titulo_proyecto: $titulo_proyecto,
+        anno_inicio: $anno_inicio,  
+        duracion_meses: $duracion_meses, 
+        area_conocimiento: $area_conocimiento
         })
     RETURN nuevoProyecto;`;
-    const params = { nombre, titulo, ins, email };
+    const params = { anno_inicio, titulo_proyecto, duracion_meses, area_conocimiento };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);

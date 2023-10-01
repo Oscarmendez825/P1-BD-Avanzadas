@@ -156,7 +156,7 @@ WITH i, COLLECT({idPry: p.idPry, titulo_proyecto: p.titulo_proyecto, anno_inicio
 RETURN proyectos;
 
 //Busqueda de proyectos a partir de su nombre, devuelve los investigadores y de las publicaciones asociadas
-MATCH (p:Proyecto {titulo_proyecto: 'Titulo Proyecto'})
+MATCH (p:Proyecto {idPry: 17})
 RETURN [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombre_completo: i.nombre_completo, titulo_academico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
        [(pb:Publicacion)-[:REALIZADA_EN]->(p) | {titulo_publicacion: pb.titulo_publicacion, anno_publicacion: pb.anno_publicacion, nombre_revista: pb.nombre_revista}] AS publicaciones;
 

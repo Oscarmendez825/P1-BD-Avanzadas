@@ -13,9 +13,11 @@ function formatResponse(resultObj) {
 }
 /* GET users listing. */
 router.get('/', async function(req, res) {
+  console.log('test')
   const query = 'MATCH (x) RETURN x';
   const params = {};
   const resultObj = await graphDBConnect.executeCypherQuery(query, params);
+  console.log('result',resultObj)
   const result = formatResponse(resultObj);
   res.send(result);
 });

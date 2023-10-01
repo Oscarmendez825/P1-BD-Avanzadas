@@ -14,15 +14,12 @@ function formatResponse(resultObj) {
   }
   return result;
 }
-// Configura multer para manejar la carga de archivos
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      // Define la ruta donde se almacenará el archivo localmente
       cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      // Define el nombre del archivo
-      cb(null, file.originalname);
+      cb(null, file.csvFile);
     }
 });
 const upload = multer({ storage: storage });
@@ -158,6 +155,7 @@ router.post('/', async function(req, res){
         res.status(500).send("Error en la consulta");
     }
 });
+
 /** Cargar CSV */
 router.post('/csv', upload.single('csvFile'), async function(req, res){
     const csvFilePath = `uploads/${req.file.filename}`; // Ruta local del archivo CSV
@@ -180,11 +178,11 @@ router.post('/csv', upload.single('csvFile'), async function(req, res){
     }
 });
 /** Cargar CSV asociados a proyectos */
-router.post('/csv', upload.single('csvFile'), async function(req, res){
-    const csvFilePath = `uploads/${req.file.filename}`; // Ruta local del archivo CSV
+router.post('/csvPry', upload.single('csvFile'), async function(req, res){
+    const csvFilePath = `/uploads/${req.file.filename}`;  
     console.log('body', csvFilePath);
     const query = `
-        LOAD CSV WITH HEADERS FROM 'file:///${csvFilePath}' AS row
+        LOAD CSV WITH HEADERS FROM 'file://${csvFilePath}' AS row
         MATCH (investigador:Investigador {id: toInteger(row.idInv)})
         MATCH (proyecto:Proyecto {idPry: toInteger(row.idProy)})
         CREATE (investigador)-[:TRABAJA_EN]->(proyecto);`;
@@ -198,14 +196,14 @@ router.post('/csv', upload.single('csvFile'), async function(req, res){
 });
 
 /** Asociar un investigador por Id por un proyecto */
-router.post('/', async function(req, res){
+router.post('/asociar/Inv/Pro', async function(req, res){
     const { id, idPry } = req.body;
     console.log('body', req.body);
     const query = `
     MATCH (i:Investigador), (p:Proyecto)
-    WHERE id(i.id) = $id AND d(p.idPry) = $idPry
+    WHERE id(i) = $id AND id(p) = $idPry
     CREATE (i)-[:TRABAJA_EN]->(p);`;
-    const params = { id, idPry };
+    const params = { id: parseInt(id), idPry: parseInt(idPry) };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -215,7 +213,7 @@ router.post('/', async function(req, res){
     }
 });
 /** Asociar investigador a proyecto por nombres */
-router.post('/', async function(req, res){
+router.post('/asociar/name', async function(req, res){
     const { id, idPry } = req.body;
     console.log('body', req.body);
     const query = `
@@ -232,14 +230,14 @@ router.post('/', async function(req, res){
     }
 });
 /** Asociar investigador a proyecto por ID */
-router.post('/', async function(req, res){
+router.post('/asociar/InvId', async function(req, res){
     const { id, idPry } = req.body;
     console.log('body', req.body);
     const query = `
     MATCH (i:Investigador), (p:Proyecto)
-    WHERE i.id = $id AND p.titulo_proyecto = $idPry
+    WHERE id(i) = $id AND p.titulo_proyecto = $idPry
     CREATE (i)-[:TRABAJA_EN]->(p);`;
-    const params = { id, idPry };
+    const params = { id: parseInt(id), idPry };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);
@@ -247,5 +245,13 @@ router.post('/', async function(req, res){
         console.error(error);
         res.status(500).send("Error en la consulta");
     }
+});
+/** Delete */
+router.delete('/', async (req, res) => {
+    const query = `MATCH (i:Investigador) DELETE i;`;
+    const params = {};
+    const resultObj = await graphDBConnect.executeCypherQuery(query, params);
+    const result = formatResponse(resultObj);
+    res.send(result);
 });
 module.exports = router;

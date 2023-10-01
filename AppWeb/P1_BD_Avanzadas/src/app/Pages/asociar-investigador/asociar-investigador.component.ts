@@ -15,17 +15,17 @@ export class AsociarInvestigadorComponent {
   selectedInvestigador: number | undefined;
   selectedProyecto: string | undefined;
   isButtonDisabled: boolean = true; 
-
+  cont: number = 0;
   afiliar = {
-    'investigador': 0,
-    'proyecto': ''
+    'id': 0,
+    'titulo_proyecto': ''
   }
 
   constructor(private apiService: GetService, private postService: PostService) { }
 
   ngOnInit(): void {
     this.getInvestigadores();
-    this.getProyectos();
+    //
   }
 
   getInvestigadores(){
@@ -46,12 +46,16 @@ export class AsociarInvestigadorComponent {
 
 
   checkFormValidity(): void {
+    if(this.cont==0){
+      this.getProyectos();
+      this.cont = 1;
+    }
     this.isButtonDisabled = !(this.selectedInvestigador && this.selectedProyecto);
   }
   afiliarInvestigador(): void {
     if (this.selectedInvestigador && this.selectedProyecto) {
-      this.afiliar.investigador = this.selectedInvestigador
-      this.afiliar.proyecto = this.selectedProyecto
+      this.afiliar.id =  Number(this.selectedInvestigador)
+      this.afiliar.titulo_proyecto = this.selectedProyecto
       this.postService.AfiliarInvestigador(this.afiliar).subscribe(
         (res) => {
           location.reload();

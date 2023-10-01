@@ -1,0 +1,5 @@
+{
+    "dbHost": "bolt://54.162.109.115:7687",
+    "dbUser": "neo4j",
+    "dbPass": "tar-weddings-approaches"
+}

@@ -126,6 +126,17 @@ RETURN p;
 MATCH (p:Publicacion)
 RETURN p;
 
+//Busqueda de todos los investigadores que no tienen proyectos asociados
+MATCH (i:Investigador)
+WHERE NOT (i)-[]-()
+RETURN i;
+
+
+//Busqueda de todas las publicaciones que no tienen proyectos asociados
+MATCH (pb:Publicacion)
+WHERE NOT (pb)-[]-()
+RETURN pb;
+
 //*****Busqueda de datos especificos*****
 //Devuelve solo los titulos de los proyectos
 MATCH (p:Proyecto)
@@ -141,13 +152,12 @@ RETURN i.nombre_completo;
 
 //Busqueda de investigador por nombre que devuelve toda su info y los proyectos donde participa
 MATCH (i:Investigador {nombre_completo: 'Nombre Investigador'})-[:TRABAJA_EN]->(p:Proyecto)
-WITH i, COLLECT({idProy: p.idPry, tituloProyecto: p.titulo_proyecto, annoInicio: p.anno_inicio, duracionMeses: p.duracion_meses, areaConocimiento: p.area_conocimiento}) AS proyectos
-RETURN i.id, i.titulo_academico, i.institucion, i.email, proyectos;
+WITH i, COLLECT({idPry: p.idPry, titulo_proyecto: p.titulo_proyecto, anno_inicio: p.anno_inicio, duracion_meses: p.duracion_meses, area_conocimiento: p.area_conocimiento}) AS proyectos
+RETURN proyectos;
 
-//Busqueda de proyectos a partir de su nombre, devuelve info del proyecto, de los investigadores y de las publicaciones asociadas
+//Busqueda de proyectos a partir de su nombre, devuelve los investigadores y de las publicaciones asociadas
 MATCH (p:Proyecto {titulo_proyecto: 'Titulo Proyecto'})
-RETURN p.idPry, p.anno_inicio, p.duracion_meses, p.area_conocimiento AS proyecto,
-       [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombre_completo: i.nombre_completo, titulo_academico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
+RETURN [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombre_completo: i.nombre_completo, titulo_academico: i.titulo_academico, institucion: i.institucion, email: i.email}] AS investigadores,
        [(pb:Publicacion)-[:REALIZADA_EN]->(p) | {titulo_publicacion: pb.titulo_publicacion, anno_publicacion: pb.anno_publicacion, nombre_revista: pb.nombre_revista}] AS publicaciones;
 
 //Busqueda de publicaciones a partir de su titulo, devuelve informacion de estas y el nombre de los proyectos asociados
@@ -168,7 +178,7 @@ RETURN  i.id, i.titulo_academico, i.institucion, i.email, COLLECT(DISTINCT i2.no
 //*****Asociar*****
 //Asociar investigador a proyecto por ID
 MATCH (i:Investigador), (p:Proyecto)
-WHERE i.id = 1 AND p.idPry = 2 // Cambia 1 y 2 a los ID reales del investigador y el proyecto
+WHERE i.id = 1 AND p.idPry = 2
 CREATE (i)-[:TRABAJA_EN]->(p);
 
 //Asociar investigador a proyecto por nombres

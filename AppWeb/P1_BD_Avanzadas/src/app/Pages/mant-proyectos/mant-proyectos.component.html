@@ -18,9 +18,9 @@
                 <label class="label-text">Título del proyecto de investigación</label>
                 <input type="text" [(ngModel)]="project.titulo_proyecto" class="input-field" placeholder="Título">
                 <label class="label-text">Año de inicio del proyecto</label>
-                <input type="text" [(ngModel)]="project.anno_inicio" class="input-field" placeholder="Año">
+                <input type="number" [(ngModel)]="project.anno_inicio" class="input-field" placeholder="Año">
                 <label class="label-text">Duración en meses</label>
-                <input type="text" [(ngModel)]="project.duracion_meses" class="input-field" placeholder="Duración">
+                <input type="number" [(ngModel)]="project.duracion_meses" class="input-field" placeholder="Duración">
                 <label class="label-text">Área de conocimiento a la que pertenece</label>
                 <input type="text" [(ngModel)]="project.area_conocimiento" class="input-field" placeholder="Área">
             </div>
@@ -33,9 +33,9 @@
             <label class="label-text">Título del proyecto de investigación</label>
             <input type="text" [(ngModel)]="project.titulo_proyecto" class="input-field" placeholder="Título">
             <label class="label-text">Año de inicio del proyecto</label>
-            <input type="text" [(ngModel)]="project.anno_inicio" class="input-field" placeholder="Año">
+            <input type="number" [(ngModel)]="project.anno_inicio" class="input-field" placeholder="Año">
             <label class="label-text">Duración en meses</label>
-            <input type="text" [(ngModel)]="project.duracion_meses" class="input-field" placeholder="Duración">
+            <input type="number" [(ngModel)]="project.duracion_meses" class="input-field" placeholder="Duración">
             <label class="label-text">Área de conocimiento a la que pertenece</label>
             <input type="text" [(ngModel)]="project.area_conocimiento" class="input-field" placeholder="Área">
             <button class="btn btn-danger" (click)="createProject()">Crear</button>

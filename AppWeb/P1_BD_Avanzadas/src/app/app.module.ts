@@ -23,6 +23,7 @@ import { BusquedaColegasComponent } from './Pages/busqueda-colegas/busqueda-cole
 import { AsociarInvestigadorComponent } from './Pages/asociar-investigador/asociar-investigador.component';
 import { AsociarArticuloComponent } from './Pages/asociar-articulo/asociar-articulo.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PutService } from './Services/put-service';
 
 
 @NgModule({
@@ -52,7 +53,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     FontAwesomeModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

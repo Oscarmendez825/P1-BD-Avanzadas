@@ -66,6 +66,26 @@ router.get('/names', async function(req, res) {
  /** Top 5  */ 
  router.get('/top5', async function(req, res) {
     const query = `MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
+        WITH i.institucion AS institucion, COUNT(p) AS cantidad
+        RETURN institucion AS nombre, cantidad
+        ORDER BY cantidad DESC
+        LIMIT 5;`;
+    const resultObj = await graphDBConnect.executeCypherQuery(query);
+    const result = [];
+    if (resultObj.records.length > 0) {
+        resultObj.records.forEach(record => {
+            result.push({
+                nombre: record.get('nombre'),
+                cantidad: record.get('cantidad')// Obtener el valor numérico
+            });
+        });
+    }
+    res.send(result);
+});
+
+ /** Top 5  */ 
+ router.get('/top5Inv', async function(req, res) {
+    const query = `MATCH (i:Investigador)-[:TRABAJA_EN]->(p:Proyecto)
         WITH i, i.institucion AS institucion, COUNT(p) AS cantidad
         RETURN i.nombre_completo AS nombre, institucion, cantidad
         ORDER BY cantidad DESC
@@ -73,12 +93,17 @@ router.get('/names', async function(req, res) {
     const resultObj = await graphDBConnect.executeCypherQuery(query);
     const result = [];
     if (resultObj.records.length > 0) {
-        resultObj.records.map(record => {
-        result.push(record._fields);
+        resultObj.records.forEach(record => {
+            result.push({
+                nombre: record.get('nombre'),
+                institucion: record.get('institucion'),
+                cantidad: record.get('cantidad')// Obtener el valor numérico
+            });
         });
     }
     res.send(result);
 });
+
 /** Busqueda de colegas de un investigador a partir de su nombre, devuelve la informacion del investigador y el nombre de los investigadores con los que ha trabajado en otros proyectos. */
 router.get('/colegas/:id', async function(req, res) {
     const { id } = req.params;
@@ -96,14 +121,44 @@ router.get('/colegas/:id', async function(req, res) {
     res.send(result);
 });
 
+router.get('/busqueda/:id', async function(req, res) {
+    const id = parseInt(req.params.id);
+    const query = `
+        MATCH (i:Investigador {id: $id})-[:TRABAJA_EN]->(p:Proyecto)
+        RETURN COLLECT({
+            idPry: p.idPry,
+            titulo_proyecto: p.titulo_proyecto,
+            anno_inicio: p.anno_inicio,
+            duracion_meses: p.duracion_meses,
+            area_conocimiento: p.area_conocimiento
+        }) AS proyectos;
+    `;
+    const params = {id};
+    const resultObj = await graphDBConnect.executeCypherQuery(query, params);
+
+    // Verifica que hay resultados antes de procesarlos
+    if (resultObj.records.length > 0) {
+        // Obtén la lista de proyectos del primer registro (debería haber solo un registro)
+        const proyectos = resultObj.records[0].get('proyectos');
+        res.send(proyectos);
+    } else {
+        res.send([]); // Devuelve un array vacío si no hay resultados
+    }
+});
+
+
 /** PUT by id */
 router.put('/:id', async function(req, res){
     const id = parseInt(req.params.id);
-    const { titulo_academico, institucion,email} = req.body;
+    const { nombre_completo, titulo_academico, institucion, email} = req.body;
     console.log('params', req.params);
     console.log('body', req.body)
-    const query = `MATCH (i:Investigador) WHERE id(i) = $id SET i.titulo_academico = $titulo_academico, i.institucion = $institucion, i.email = $email RETURN i;`;
-    const params = { id, titulo_academico, institucion, email };
+
+    const query = `MATCH (i:Investigador {id: $id}) SET i.nombre_completo = $nombre_completo,
+             i.titulo_academico = $titulo_academico, 
+             i.institucion = $institucion, 
+             i.email = $email;`;
+    const params = {id, nombre_completo, titulo_academico, institucion, email };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         if(resultObj.records.length > 0) res.send(resultObj.records[0].get(0).properties)
@@ -132,7 +187,7 @@ router.put('/name/:id', async function(req, res){
 
 /** post */
 router.post('/', async function(req, res){
-    const { nombre_completo, titulo_academico, institucion,email} = req.body;
+    const { nombre_completo, titulo_academico, institucion, email} = req.body;
     console.log('params', req.params);
     console.log('body', req.body);
     const query = `
@@ -230,14 +285,13 @@ router.post('/asociar/name', async function(req, res){
     }
 });
 /** Asociar investigador a proyecto por ID */
-router.post('/asociar/InvId', async function(req, res){
-    const { investigador, proyecto } = req.body;
+router.post('/asociar', async function(req, res){
+    const {id, titulo_proyecto} = req.body;
     console.log('body', req.body);
-    const query = `
-    MATCH (i:Investigador), (p:Proyecto)
-    WHERE id(i) = $investigador AND p.titulo_proyecto = $proyecto
+    const query = `MATCH (i:Investigador), (p:Proyecto)
+    WHERE i.id = $id AND p.titulo_proyecto = $titulo_proyecto
     CREATE (i)-[:TRABAJA_EN]->(p);`;
-    const params = { investigador: parseInt(investigador), proyecto };
+    const params = { id, titulo_proyecto };
     try {
         const resultObj = await graphDBConnect.executeCypherQuery(query, params);
         res.send(resultObj.records);

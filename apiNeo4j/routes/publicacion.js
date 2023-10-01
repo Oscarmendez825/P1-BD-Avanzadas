@@ -52,7 +52,7 @@ router.get('/title/:id', async function(req, res) {
 /** PUT by id */
 router.put('/:id', async function(req, res){
     const { titulo_publicacion,anno_publicacion,nombre_revista } = req.body;
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     console.log('body', req.body);
     console.log('params', req.params);
     const query = `MATCH (p:Publicacion {idPub: $id})
@@ -131,13 +131,12 @@ router.post('/', async function(req, res){
 });
 /** Asociar un articulo a un proyecto por ID */
 router.post('/asociar/Inv/Pro', async function(req, res){
-  const { articulo, proyecto } = req.body;
+  const { idPub, idPry } = req.body;
   console.log('body', req.body);
-  const query = `
-  MATCH (pb:Publicacion), (p:Proyecto)
-  WHERE id(i) = $articulo AND id(p) = $proyecto
+  const query = `MATCH (pb:Publicacion), (p:Proyecto)
+  WHERE pb.idPub = $idPub AND p.idPry = $idPry
   CREATE (pb)-[:REALIZADA_EN]->(p);`;
-  const params = { articulo: parseInt(articulo), proyecto: parseInt(proyecto) };
+  const params = { idPub, idPry };
   try {
       const resultObj = await graphDBConnect.executeCypherQuery(query, params);
       res.send(resultObj.records);

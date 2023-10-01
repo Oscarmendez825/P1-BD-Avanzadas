@@ -11,7 +11,7 @@ import { Injectable, NgModule } from "@angular/core";
 })
 export class PostService {
 
-    private baseUrl = '';
+    private baseUrl = 'http://localhost:3000/';
 
     constructor(private http: HttpClient) {
     }
@@ -20,35 +20,37 @@ export class PostService {
     //Se le envia al api un objeto del tipo publicacion
     //URL: ejemplo: www.ejemplo.com/publicacion
     crearPublicacion(pub:Publicacion):Observable<any>{
-        return this.http.post<any>(this.baseUrl, pub);
+        return this.http.post<any>(this.baseUrl+"publicacion", pub);
     }
 
     //POST crear un proyecto
     //Se le envia al api un objeto del tipo proyecto
     //URL: ejemplo: www.ejemplo.com/proyecto
     crearProyecto(proyecto:Project):Observable<any>{
-        return this.http.post<any>(this.baseUrl, proyecto);
+        return this.http.post<any>(this.baseUrl+"proyecto", proyecto);
     }
 
     //POST crear un investigador
     //Se le envia al api un objeto del tipo investigador
     //URL: ejemplo: www.ejemplo.com/investigador
     crearInvestigador(investigador:Investigador):Observable<any>{
-        return this.http.post<any>(this.baseUrl, investigador);
+        return this.http.post<any>(this.baseUrl+"investigador", investigador);
     }
 
     //POST afiliar a un investigador a un proyecto
     //Se le envia al api un objeto del tipo afiliar afiliar = { 'investigador': 0, 'proyecto': ''}
     //URL: ejemplo: www.ejemplo.com/afiliarinvestigador
     AfiliarInvestigador(afiliar:any):Observable<any>{
-        return this.http.post<any>(this.baseUrl, afiliar);
+        console.log(afiliar)
+        return this.http.post<any>(this.baseUrl+"investigador/asociar", afiliar);
     }
 
     //POST asociar un articulo a un proyecto
     //Se le envia al api un objeto del tipo afiliar afiliar = { 'articulo': '', 'proyecto': ''}
     //URL: ejemplo: www.ejemplo.com/asociar articulo
     AsociarArticulo(asociar:any):Observable<any>{
-        return this.http.post<any>(this.baseUrl, asociar);
+        console.log(asociar)
+        return this.http.post<any>(this.baseUrl+"publicacion/asociar/Inv/Pro", asociar);
     }
 
     //POST subir archivos csv

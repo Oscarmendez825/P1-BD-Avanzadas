@@ -33,22 +33,32 @@ router.get('/', async function(req, res) {
   const result = formatResponse(resultObj);
   res.send(result);
 });
+
 /** Busqueda de publicaciones a partir de su titulo, devuelve informacion de estas y el nombre de los proyectos asociados */
 router.get('/title/:id', async function(req, res) {
   const { id } = req.params;
   const query = `
   MATCH (pb:Publicacion {titulo_publicacion: $id})-[:REALIZADA_EN]->(p:Proyecto)
-  RETURN pb.idPub, pb.anno_publicacion, pb.nombre_revista, p.titulo_proyecto;`;
+  RETURN pb.titulo_publicacion, pb.anno_publicacion, pb.nombre_revista, p.titulo_proyecto;`;
   const params = {id};
   const resultObj = await graphDBConnect.executeCypherQuery(query, params);
-  const result = [];
+  let result = null; // Inicializamos result como null
+
   if (resultObj.records.length > 0) {
-      resultObj.records.map(record => {
-      result.push(record._fields);
-      });
+    const record = resultObj.records[0]; // Obtenemos el primer registro
+
+    // Creamos un objeto con los datos del registro
+    result = {
+      titulo_publicacion: record.get('pb.titulo_publicacion'),
+      anno_publicacion: record.get('pb.anno_publicacion'),
+      nombre_revista: record.get('pb.nombre_revista'),
+      titulo_proyecto: record.get('p.titulo_proyecto')
+    };
   }
-  res.send(result);
+
+  res.json(result); // Enviamos el objeto JSON como respuesta
 });
+
 /** PUT by id */
 router.put('/:id', async function(req, res){
     const { titulo_publicacion,anno_publicacion,nombre_revista } = req.body;

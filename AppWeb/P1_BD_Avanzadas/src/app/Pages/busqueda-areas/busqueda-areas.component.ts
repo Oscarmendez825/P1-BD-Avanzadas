@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Area } from 'src/app/Interfaces/Area';
 import { Project } from 'src/app/Interfaces/Project';
+import { PubBusq } from 'src/app/Interfaces/PubBusq';
 import { Publicacion } from 'src/app/Interfaces/Publicacion';
 import { GetService } from 'src/app/Services/get-service';
 
@@ -10,8 +11,7 @@ import { GetService } from 'src/app/Services/get-service';
   styleUrls: ['./busqueda-areas.component.css']
 })
 export class BusquedaAreasComponent {
-  investigaciones: Project[] = [];
-  publicaciones: Publicacion[] = [];
+  informacion: PubBusq[] = [];
   areas: Area[] = [];
   areaSeleccionada: Area | null = null;
 
@@ -29,21 +29,14 @@ export class BusquedaAreasComponent {
     );
   }
 
-  getAreaProyectos(name:string){
-    this.apiService.GetAreaProyectos(name).subscribe(
+  getAreaInfo(name:string){
+    this.apiService.GetAreaInfo(name).subscribe(
       (res) => {
-        this.investigaciones = res;
+        this.informacion = res;
       }
     );
   }
 
-  getAreaPublicaciones(name:string){
-    this.apiService.GetAreaPublicaciones(name).subscribe(
-      (res) => {
-        this.publicaciones = res;
-      }
-    );
-  }
 
   seleccionarArea(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -54,8 +47,7 @@ export class BusquedaAreasComponent {
   
       if (areaSeleccionada) {
         this.areaSeleccionada = areaSeleccionada;
-        this.getAreaPublicaciones(areaSeleccionada.nombre);
-        this.getAreaProyectos(areaSeleccionada.nombre);
+        this.getAreaInfo(areaSeleccionada.nombre);
       }
     }
   }

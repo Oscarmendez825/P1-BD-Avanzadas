@@ -29,6 +29,7 @@ export class BusquedaPublicacionComponent {
   getPublicacionBusqueda(tituloSeleccionado:string){
     this.apiService.GetPublicacionBusqueda(tituloSeleccionado).subscribe(
       (res) => {
+        console.log(res)
         this.selectedPubs.push(res);
       }
     );

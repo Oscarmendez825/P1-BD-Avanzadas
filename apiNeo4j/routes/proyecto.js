@@ -70,15 +70,42 @@ router.get('/names', async function(req, res) {
 
 /** Get only areas de conocimiento  */
 router.get('/areas', async function(req, res) {
-const query = 'MATCH (p:Proyecto) RETURN p.area_conocimiento;';
-const resultObj = await graphDBConnect.executeCypherQuery(query);
-const result = [];
-if (resultObj.records.length > 0) {
-    resultObj.records.map(record => {
-    result.push(record._fields[0]);
-    });
-}
-res.send(result);
+    const query = 'MATCH (p:Proyecto) RETURN p.area_conocimiento;';
+    const resultObj = await graphDBConnect.executeCypherQuery(query);
+    const result = [];
+  
+    if (resultObj.records.length > 0) {
+      resultObj.records.forEach(record => {
+        const nombre = record.get('p.area_conocimiento');
+        result.push({ nombre });
+      });
+    }
+  
+    res.send(result);
+  });
+
+/** Get only areas de conocimiento  */
+router.get('/areas/:nombre', async function(req, res) {
+    const nombre = req.params.nombre;
+    const query = `
+        MATCH (p:Proyecto {area_conocimiento: $nombre})
+        RETURN [(pb:Publicacion)-[:REALIZADA_EN]->(p) | {titulo_proyecto: p.titulo_proyecto, titulo_publicacion: pb.titulo_publicacion}] AS resultado;
+    `;
+    const params = { nombre };
+    
+    try {
+        const resultObj = await graphDBConnect.executeCypherQuery(query, params);
+
+        if (resultObj.records.length > 0) {
+            const resultado = resultObj.records[0].get('resultado');
+            res.send(resultado);
+        } else {
+            res.send([]); // Devuelve un arreglo vacío si no hay resultados
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error al ejecutar la consulta' });
+    }
 });
 
 

@@ -3,5 +3,5 @@ export interface Publicacion {
     titulo_publicacion: string,
     anno_publicacion: number,
     nombre_revista: string,
-    proyecto?:string
+    titulo_proyecto?:string
 }

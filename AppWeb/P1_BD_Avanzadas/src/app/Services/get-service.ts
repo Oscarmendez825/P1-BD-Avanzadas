@@ -85,15 +85,15 @@ export class GetService {
     //GET de los colegas de un investigador
     //El API debe devolver un array lleno de investigadores
     //URL: ejemplo: www.ejemplo.com/investigadorcolegas/{nombre del investigador}
-    GetInvestigadorColegas(investigador:string):Observable<Investigador[]>{
-        return this.http.get<Investigador[]>(this.baseUrl+investigador)
+    GetInvestigadorColegas(investigador:number|undefined):Observable<Investigador[]>{
+        return this.http.get<Investigador[]>(this.baseUrl+"investigador/colegas/"+investigador)
     }
 
     //GET de los proyectos de un area
     //El API debe devolver un array lleno de proyectos
     //URL: ejemplo: www.ejemplo.com/proyectosarea/{nombre del area}
-    GetAreaProyectos(area:string):Observable<Project[]>{
-        return this.http.get<Project[]>(this.baseUrl+area)
+    GetAreaInfo(area:string):Observable<any[]>{
+        return this.http.get<any[]>(this.baseUrl+"proyecto/areas/"+area)
     }
 
     //GET de los publicaciones de un area
@@ -107,13 +107,13 @@ export class GetService {
     //El API debe devolver un array lleno de areas
     //URL: ejemplo: www.ejemplo.com/areas
     GetAreas():Observable<Area[]>{
-        return this.http.get<Area[]>(this.baseUrl)
+        return this.http.get<Area[]>(this.baseUrl+"proyecto/areas")
     }
 
     //GET de una publicacion y su proyecto
     //El API debe devolver un JSON con un objeto Publicacion y el nombre del proyecto (ver interface publicacion)
     //URL: ejemplo: www.ejemplo.com/publicacionesbusqueda/{nombre de la publicacion}
     GetPublicacionBusqueda(publicacion:string):Observable<Publicacion>{
-        return this.http.get<Publicacion>(this.baseUrl+publicacion)
+        return this.http.get<Publicacion>(this.baseUrl+"publicacion/title/"+publicacion)
     }
 }

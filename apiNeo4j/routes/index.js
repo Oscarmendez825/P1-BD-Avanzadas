@@ -25,7 +25,7 @@ router.get('/all', async function(req, res) {
   res.send(result);
 });
 router.get('/investigador', async function(req, res) {
-  const query = 'MATCH (i:Investigador) RETURN DISTINCT i;';
+  const query = 'MATCH (i:Investigador) RETURN i;';
   const params = {};
   const resultObj = await graphDBConnect.executeCypherQuery(query, params);
   console.log('result',resultObj)

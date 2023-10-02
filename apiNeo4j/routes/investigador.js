@@ -106,20 +106,23 @@ router.get('/names', async function(req, res) {
 
 /** Busqueda de colegas de un investigador a partir de su nombre, devuelve la informacion del investigador y el nombre de los investigadores con los que ha trabajado en otros proyectos. */
 router.get('/colegas/:id', async function(req, res) {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const query = `
-    MATCH (i:Investigador {nombre_completo: $id})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
-    RETURN  i.id, i.titulo_academico, i.institucion, i.email, COLLECT(DISTINCT i2.nombre_completo) AS nombresColegas;`;
+        MATCH (i:Investigador {id: $id})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
+        RETURN COLLECT({nombre_completo:i2.nombre_completo, titulo_academico: i2.titulo_academico,institucion:i2.institucion, email:i2.email }) AS colegas;
+    `;
     const params = {id};
     const resultObj = await graphDBConnect.executeCypherQuery(query, params);
-    const result = [];
+
     if (resultObj.records.length > 0) {
-        resultObj.records.map(record => {
-        result.push(record._fields);
-        });
+        // La consulta Cypher devuelve una lista, por lo que puedes acceder a ella directamente
+        const result = resultObj.records[0].get('colegas');
+        res.send(result);
+    } else {
+        res.send([]); // Si no hay resultados, devolver una lista vacía
     }
-    res.send(result);
 });
+
 
 router.get('/busqueda/:id', async function(req, res) {
     const id = parseInt(req.params.id);

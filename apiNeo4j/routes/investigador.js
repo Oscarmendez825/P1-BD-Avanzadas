@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      cb(null, file.csvFile);
+      cb(null, file.originalname);
     }
 });
 const upload = multer({ storage: storage });
@@ -213,6 +213,7 @@ router.post('/', async function(req, res){
 
 /** Cargar CSV */
 router.post('/csv', upload.single('csvFile'), async function(req, res){
+    
     const csvFilePath = `uploads/${req.file.filename}`; // Ruta local del archivo CSV
     console.log('body', csvFilePath);
     const query = `
@@ -234,6 +235,9 @@ router.post('/csv', upload.single('csvFile'), async function(req, res){
 });
 /** Cargar CSV asociados a proyectos */
 router.post('/csvPry', upload.single('csvFile'), async function(req, res){
+    if (!req.file || !req.file.path) {
+        return res.status(400).send("No se proporcionó un archivo válido.");
+      }
     const csvFilePath = `/uploads/${req.file.filename}`;  
     console.log('body', csvFilePath);
     const query = `

@@ -116,7 +116,7 @@ SET i.titulo_academico = 'Nuevo Título Académico',
 //*****Busqueda de datos generales*****
 //Busqueda de TODOS los investigadores
 MATCH (i:Investigador)
-RETURN DISTINCT i;
+RETURN i;
 
 //Busqueda de TODOS los proyectos
 MATCH (p:Proyecto)
@@ -162,17 +162,16 @@ RETURN [(i:Investigador)-[:TRABAJA_EN]->(p) | {nombre_completo: i.nombre_complet
 
 //Busqueda de publicaciones a partir de su titulo, devuelve informacion de estas y el nombre de los proyectos asociados
 MATCH (pb:Publicacion {titulo_publicacion: 'Titulo Publicacion'})-[:REALIZADA_EN]->(p:Proyecto)
-RETURN pb.idPub, pb.anno_publicacion, pb.nombre_revista, p.titulo_proyecto;
+RETURN pb.titulo_publicacion, pb.anno_publicacion, pb.nombre_revista, p.titulo_proyecto;
 
 //Busqueda de area de conocimiento por nombre del area, devuelve el nombre del area de conocimiento, los nombres de los proyectos asociados y de las publicaciones del area
-MATCH (p:Proyecto {area_conocimiento: 'Nombre area conocimiento'})<-[:REALIZADA_EN]-(pb:Publicacion)
-RETURN DISTINCT p.area_conocimiento AS area_conocimiento,
-       COLLECT(DISTINCT p.titulo_proyecto) AS proyectos,
-       COLLECT(DISTINCT pb.titulo_publicacion) AS publicaciones;
+MATCH (p:Proyecto {area_conocimiento: 'Energías Renovables'})
+RETURN [(pb:Publicacion)-[:REALIZADA_EN]->(p) | {titulo_proyecto: p.titulo_proyecto,titulo_publicacion:pb.titulo_publicacion}];
+        
 
 //Busqueda de colegas de un investigador a partir de su nombre, devuelve la informacion del investigador y el nombre de los investigadores con los que ha trabajado en otros proyectos.
-MATCH (i:Investigador {nombre_completo: 'Nombre investigador'})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
-RETURN  i.id, i.titulo_academico, i.institucion, i.email, COLLECT(DISTINCT i2.nombre_completo) AS nombresColegas;
+MATCH (i:Investigador {id: 1})-[:TRABAJA_EN]->(p:Proyecto)<-[:TRABAJA_EN]-(i2:Investigador)
+RETURN COLLECT({nombre_completo:i2.nombre_completo, titulo_academico: i2.titulo_academico,institucion:i2.institucion, email:i2.email }) AS colegas;
 
 
 //*****Asociar*****

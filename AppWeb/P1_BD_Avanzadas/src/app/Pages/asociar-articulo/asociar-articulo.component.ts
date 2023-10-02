@@ -13,20 +13,19 @@ export class AsociarArticuloComponent {
 
   articulos: Publicacion[] = [];
   proyectos: Project[] = [];
-  selectedArticulo: string | undefined;
-  selectedProyecto: string | undefined;
+  selectedArticulo: number | undefined;
+  selectedProyecto: number | undefined;
   isButtonDisabled: boolean = true; // Inicialmente, el botón estará deshabilitado
-
+  cont: number = 0;
   asociar = {
-    'articulo': '',
-    'proyecto': ''
+    'idPub': 0,
+    'idPry': 0
   }
 
   constructor(private apiService: GetService, private postService: PostService) { }
 
   ngOnInit(): void {
     this.getPublicaciones();
-    this.getProyectos();
   }
 
   getPublicaciones(){
@@ -45,12 +44,16 @@ export class AsociarArticuloComponent {
     );
   }
   checkFormValidity(): void {
+    if(this.cont==0){
+      this.getProyectos();
+      this.cont = 1;
+    }
     this.isButtonDisabled = !(this.selectedArticulo && this.selectedProyecto);
   }
   afiliarInvestigador(): void {
     if (this.selectedArticulo && this.selectedProyecto) {
-      this.asociar.articulo = this.selectedArticulo
-      this.asociar.proyecto = this.selectedProyecto
+      this.asociar.idPub = Number(this.selectedArticulo)
+      this.asociar.idPry = Number(this.selectedProyecto)
       this.postService.AsociarArticulo(this.asociar).subscribe(
         (res) => {
           location.reload();

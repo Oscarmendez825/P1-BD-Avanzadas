@@ -11,7 +11,7 @@
             </select>
         </form>
 
-        <h3 class="investigador-subtitle">Datos básicos del investigador</h3>
+        <h3 class="investigador-subtitle">Datos básicos del área</h3>
         <table *ngIf="areaSeleccionada" class="investigador-table">
             <tr>
                 <th>Nombre Completo</th>
@@ -19,23 +19,15 @@
             </tr>
         </table>
 
-        <h3 class="investigador-subtitle">Investigaciones en el área seleccionada</h3>
-        <table *ngIf="investigaciones.length > 0" class="investigador-table">
+        <h3 class="investigador-subtitle">Investigaciones y publicaciones en el área seleccionada</h3>
+        <table *ngIf="informacion.length > 0" class="investigador-table">
             <tr>
-                <th>Nombre</th>
+                <th>Nombre de la investigación</th>
+                <th>Publicaciones del área</th>
             </tr>
-            <tr *ngFor="let investigacion of investigaciones">
+            <tr *ngFor="let investigacion of informacion">
                 <td>{{ investigacion.titulo_proyecto }}</td>
-            </tr>
-        </table>
-
-        <h3 class="investigador-subtitle">Publicaciones en el área seleccionada</h3>
-        <table *ngIf="publicaciones.length > 0" class="investigador-table">
-            <tr>
-                <th>Título</th>
-            </tr>
-            <tr *ngFor="let publicacion of publicaciones">
-                <td>{{ publicacion.titulo_publicacion }}</td>
+                <td>{{ investigacion.titulo_publicacion }}</td>
             </tr>
         </table>
     </div>

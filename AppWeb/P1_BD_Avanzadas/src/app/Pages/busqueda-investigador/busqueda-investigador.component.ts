@@ -29,8 +29,8 @@ export class BusquedaInvestigadorComponent {
     );
   }
 
-  getProyectosInvestigador(name:string){
-    this.apiService.GetProyectosInvestigador(name).subscribe(
+  getProyectosInvestigador(id:number|undefined){
+    this.apiService.GetProyectosInvestigador(id).subscribe(
       (res) => {
         this.investigacionesInvestigador = res;
       }
@@ -46,7 +46,8 @@ export class BusquedaInvestigadorComponent {
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        this.getProyectosInvestigador(investigadorSeleccionado.nombre_completo);
+        this.getProyectosInvestigador(investigadorSeleccionado.id);
+        
       }
     }
   }

@@ -30,18 +30,11 @@ export class BusquedaProyectoComponent {
     );
   }
 
-  getInvestigadoresProyecto(name:string){
-    this.apiService.GetInvestigadorProyectos(name).subscribe(
+  getPublicacionesInvestigadoresProyecto(id:number|undefined){
+    this.apiService.GetProyectoPublicacionesInvestigadores(id).subscribe(
       (res) => {
-        this.investigadoresProyecto = res;
-      }
-    );
-  }
-
-  getPublicacionesProyecto(name:string){
-    this.apiService.GetProyectoPublicaciones(name).subscribe(
-      (res) => {
-        this.publicacionesProyecto = res;
+        this.publicacionesProyecto = res[1];
+        this.investigadoresProyecto = res[0];
       }
     );
   }
@@ -56,8 +49,7 @@ export class BusquedaProyectoComponent {
   
       if (proyectoSeleccionado) {
         this.proyectoSeleccionado = proyectoSeleccionado;
-        this.getInvestigadoresProyecto(proyectoSeleccionado.titulo_proyecto);
-        this.getPublicacionesProyecto(proyectoSeleccionado.titulo_proyecto);
+        this.getPublicacionesInvestigadoresProyecto(proyectoSeleccionado.idPry);
       }
     }
   }

@@ -27,7 +27,7 @@ export class BusquedaColegasComponent {
     );
   }
 
-  getInvestigadorColegas(name:string){
+  getInvestigadorColegas(name:number|undefined){
     this.apiService.GetInvestigadorColegas(name).subscribe(
       (res) => {
         this.investigadoresColegas = res;
@@ -44,7 +44,7 @@ export class BusquedaColegasComponent {
   
       if (investigadorSeleccionado) {
         this.investigadorSeleccionado = investigadorSeleccionado;
-        this.getInvestigadorColegas(investigadorSeleccionado.nombre_completo);
+        this.getInvestigadorColegas(investigadorSeleccionado.id);
       }
     }
   }

@@ -46,7 +46,11 @@ export class StartPageComponent {
   }
 
   subirArchivos(){
-    this.postService.SubirArchivos(this.selectedFiles).subscribe(
+    const formData = new FormData();
+    this.selectedFiles.forEach((archivo) => {
+    formData.append('archivos', archivo);
+    });
+    this.postService.SubirArchivos(formData).subscribe(
       (res) => {
         location.reload();
       }

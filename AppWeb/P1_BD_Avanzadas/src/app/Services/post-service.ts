@@ -56,8 +56,8 @@ export class PostService {
     //POST subir archivos csv
     //Se le envia al api un array de objetos de tipo File
     //URL: ejemplo: www.ejemplo.com/subircsv
-    SubirArchivos(archivos:File[]):Observable<File>{
+    SubirArchivos(archivos:FormData):Observable<File>{
         console.log(archivos);
-        return this.http.post<any>(this.baseUrl, archivos);
+        return this.http.post<any>(this.baseUrl+"subircsv", archivos);
     }
 }

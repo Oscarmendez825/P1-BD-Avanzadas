@@ -34,4 +34,29 @@ async function executeCypherQuery(statement, params = {}) {
   }
 }
 
-module.exports = { executeCypherQuery };
+async function close(){
+  try {
+    session.close()
+  } catch (error) {
+    throw error;
+  }
+
+}
+
+async function driverclose(){
+  try {
+    driver.close()
+  } catch (error) {
+    throw error;
+  }
+
+}
+
+async function getSession(){
+  try {
+    return session;
+  } catch (error) {
+    throw error;
+  }
+}
+module.exports = { executeCypherQuery, close, driverclose, getSession, driver: driver,};

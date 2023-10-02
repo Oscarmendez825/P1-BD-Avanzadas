@@ -30,7 +30,6 @@ router.get('/', async function(req, res) {
   const query = 'MATCH (p:Proyecto) RETURN p;';
   const params = {};
   const resultObj = await graphDBConnect.executeCypherQuery(query, params);
-  console.log('result',resultObj)
   const result = formatResponse(resultObj);
   res.send(result);
 });

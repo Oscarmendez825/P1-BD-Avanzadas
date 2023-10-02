@@ -13,6 +13,7 @@ const driver = neo4j.driver(uri, neo4j.auth.basic(user, password),
   connectionAcquisitionTimeout: 2 * 60 * 1000, // 120 seconds
   disableLosslessIntegers: true}
 );
+driver.allow_csv_import_from_file_urls = true;
 
 const session = driver.session();
 exports.getSession = function (context) {

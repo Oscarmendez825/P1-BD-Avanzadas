@@ -1,0 +1,51 @@
+<div class="background">
+    <!-- investigador.component.html -->
+    <div class="investigador-container">
+        <h2 class="investigador-title">Búsqueda de investigador</h2>
+        <form>
+            <label for="investigadorSelect" class="investigador-label">Selecciona un investigador:</label>
+            <select id="investigadorSelect" (change)="seleccionarInvestigador($event)" class="investigador-select">
+                <option value="" disabled selected>Elige un investigador</option>
+                <option *ngFor="let investigador of investigadores" [ngValue]="investigador">{{
+                    investigador.nombre_completo }}</option>
+            </select>
+        </form>
+
+        <h3 class="investigador-subtitle">Datos básicos del investigador</h3>
+        <table *ngIf="investigadorSeleccionado" class="investigador-table">
+            <tr>
+                <th>Nombre Completo</th>
+                <td>{{ investigadorSeleccionado.nombre_completo }}</td>
+            </tr>
+            <tr>
+                <th>Título Académico</th>
+                <td>{{ investigadorSeleccionado.titulo_academico }}</td>
+            </tr>
+            <tr>
+                <th>Institución</th>
+                <td>{{ investigadorSeleccionado.institucion }}</td>
+            </tr>
+            <tr>
+                <th>Correo Electrónico</th>
+                <td>{{ investigadorSeleccionado.email }}</td>
+            </tr>
+        </table>
+
+        <h3 class="investigador-subtitle">Investigaciones en las que participa</h3>
+        <table *ngIf="investigacionesInvestigador.length > 0" class="investigador-table">
+            <tr>
+                <th>Título</th>
+                <th>Año</th>
+                <th>Duración (meses)</th>
+                <th>Área</th>
+            </tr>
+            <tr *ngFor="let investigacion of investigacionesInvestigador">
+                <td>{{ investigacion.titulo_proyecto }}</td>
+                <td>{{ investigacion.anno_inicio }}</td>
+                <td>{{ investigacion.duracion_meses }}</td>
+                <td>{{ investigacion.area_conocimiento }}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>

@@ -1,0 +1,50 @@
+.footer {
+    background-color: #d8f8e1; /* Color de fondo pastel */
+    padding: 20px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    
+    /* Utilizamos Flexbox para alinear el contenido */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 14vh; /* Altura mínima de la ventana gráfica */
+
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+  }
+  
+  .footer-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5e5e5e; /* Color de texto gris */
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 20px;
+
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: #5e5e5e; /* Color de texto gris */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color: #3498db; /* Color de texto azul al pasar el mouse */
+  }
+  
+  .footer-copyright {
+    margin-top: auto; /* Empuja el contenido hacia la parte inferior */
+    color: #5e5e5e; /* Color de texto gris */
+  }
+  

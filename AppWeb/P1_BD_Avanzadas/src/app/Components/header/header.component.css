@@ -1,0 +1,108 @@
+/* Estilos del encabezado */
+.header {
+  background-color: #d8f8e1;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.header:hover {
+  background-color: #d8f8e1;
+}
+
+/* Estilos de la barra de navegación */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #d8f8e1;
+  padding: 10px 20px;
+}
+
+/* Estilos del logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #066134;
+}
+
+/* Estilos de los enlaces de navegación */
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  margin-right: auto; /* Alinea los enlaces a la izquierda */
+}
+
+.nav-links li {
+  margin-right: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #5bb69b;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: #072710;
+}
+
+/* Estilos para el submenú desplegable */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px #d8f8e1;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.aaa{
+  color: #d8f8e1;
+}
+/* Estilos adicionales para hacerlo responsive */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+  }
+
+  .nav-links li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .dropdown {
+    position: static;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: static;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: none;
+  }
+}

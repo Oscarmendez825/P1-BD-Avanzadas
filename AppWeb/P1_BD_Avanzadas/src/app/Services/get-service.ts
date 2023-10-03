@@ -116,4 +116,8 @@ export class GetService {
     GetPublicacionBusqueda(publicacion:string):Observable<Publicacion>{
         return this.http.get<Publicacion>(this.baseUrl+"publicacion/title/"+publicacion)
     }
+
+    GetPublicacionAsociar():Observable<Publicacion[]>{
+        return this.http.get<Publicacion[]>(this.baseUrl+"publicacion/asociar")
+    }
 }

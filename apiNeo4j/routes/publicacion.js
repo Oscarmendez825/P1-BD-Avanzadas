@@ -172,4 +172,30 @@ router.post('/asociar/name', async function(req, res){
       res.status(500).send("Error en la consulta");
   }
 });
+
+
+router.get('/asociar', async function(req, res) {
+  const query = `MATCH (pb:Publicacion)
+  WHERE NOT (pb)-[]-()
+  RETURN pb.titulo_publicacion AS titulo_publicacion,
+         pb.nombre_revista AS nombre_revista,
+         pb.idPub AS idPub,
+         pb.anno_publicacion AS anno_publicacion`;
+  const resultObj = await graphDBConnect.executeCypherQuery(query);
+  const results = []; // Inicializamos results como un array vacío
+
+  resultObj.records.forEach((record) => {
+    // Creamos un objeto con los datos del registro actual y lo agregamos al array
+    const result = {
+      titulo_publicacion: record.get('titulo_publicacion'),
+      anno_publicacion: record.get('anno_publicacion'),
+      nombre_revista: record.get('nombre_revista'),
+      idPub: record.get('idPub')
+    };
+    results.push(result);
+  });
+
+  res.json(results); // Enviamos el array de objetos JSON como respuesta
+});
+
 module.exports = router;

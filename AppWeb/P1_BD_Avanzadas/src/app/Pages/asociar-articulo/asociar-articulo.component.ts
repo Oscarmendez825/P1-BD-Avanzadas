@@ -29,7 +29,7 @@ export class AsociarArticuloComponent {
   }
 
   getPublicaciones(){
-    this.apiService.GetPublicaciones().subscribe(
+    this.apiService.GetPublicacionAsociar().subscribe(
       (res) => {
         this.articulos = res;
       }

@@ -25,6 +25,7 @@ exports.getSession = function (context) {
     return context.neo4jSession;
   }
 };
+
 async function executeCypherQuery(statement, params = {}) {
   try {
     const result = session.run(statement, params);
@@ -34,29 +35,16 @@ async function executeCypherQuery(statement, params = {}) {
   }
 }
 
-async function close(){
+async function closeMainSession() {
   try {
-    session.close()
+    await session.close();
   } catch (error) {
-    throw error;
-  }
-
-}
-
-async function driverclose(){
-  try {
-    driver.close()
-  } catch (error) {
-    throw error;
-  }
-
-}
-
-async function getSession(){
-  try {
-    return session;
-  } catch (error) {
-    throw error;
+    console.error('Error al cerrar la sesión principal:', error);
   }
 }
-module.exports = { executeCypherQuery, close, driverclose, getSession, driver: driver,};
+
+module.exports = {
+  executeCypherQuery,
+  driver,
+  closeMainSession,
+};
